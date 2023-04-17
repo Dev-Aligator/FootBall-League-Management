@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.6)  17 APR 2023 00:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.6)  17 APR 2023 08:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -153,21 +153,25 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 20.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 20.
-[1
+(./FLM-Specifications.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 2.
+ [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Figs/logo-uit-300x248.png>] [2{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [3] [4]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Figs/logo-uit-300x248.png>])
+\tf@toc=\write3
+\openout3 = `FLM-Specifications.toc'.
+
+ [2] [3{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [4] [5]
 Overfull \hbox (1.4181pt too wide) in paragraph at lines 118--119
 []\OT1/cmr/m/n/12 Inefficient man-ual pro-cesses: With-out a com-pre-hen-sive soft-ware so-lu-tion, many
  []
 
-[5] [6]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 190.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 190.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 190.
- [7] [8] [9] [10] [11] [12]
+[6] [7] [8] [9] [10] [11] [12]
 <Figs/Class.png, id=47, 1224.575pt x 752.8125pt>
 File: Figs/Class.png Graphic file (type png)
 <use Figs/Class.png>
@@ -178,24 +182,24 @@ Overfull \hbox (63.02998pt too wide) in paragraph at lines 506--507
  [][] 
  []
 
-(./FLM-Specifications.bbl
+[13] (./FLM-Specifications.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 23.
 
-) [13 <./Figs/Class.png (PNG copy)>] (./FLM-Specifications.aux) ) 
+) [14 <./Figs/Class.png (PNG copy)>] (./FLM-Specifications.aux) ) 
 Here is how much of TeX's memory you used:
- 2024 strings out of 476025
- 33295 string characters out of 5796533
- 1882388 words of memory out of 5000000
- 22487 multiletter control sequences out of 15000+600000
+ 2030 strings out of 476025
+ 33407 string characters out of 5796533
+ 1884388 words of memory out of 5000000
+ 22490 multiletter control sequences out of 15000+600000
  517792 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,9n,62p,798b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on FLM-Specifications.pdf (13 pages, 216295 bytes).
+Output written on FLM-Specifications.pdf (14 pages, 217177 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
+ 75 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
