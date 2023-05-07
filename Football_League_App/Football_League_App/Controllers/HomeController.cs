@@ -51,5 +51,11 @@ namespace Football_League_App.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet] 
+        public ActionResult Register()
+        {
+            return View();
+        }
     }
 }

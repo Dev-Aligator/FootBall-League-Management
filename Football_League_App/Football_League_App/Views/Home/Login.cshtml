@@ -1,9 +1,8 @@
 ﻿<html>
 
 	<head>
-	This is Login Page
-	<style>
-	</style>
+		<link rel="stylesheet" type="text/css" href="~/css/login.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 	</head>
 
 <body style="background-color:bisque;
@@ -11,30 +10,39 @@ background-repeat:no-repeat;
 background-image:url(https://thuthuatnhanh.com/wp-content/uploads/2022/06/Anh-bong-da-sieu-dep.jpg);
 background-size:cover;
 ">
-<div>
-	This is Login Button 
-</div>
-<div style="height:250px;width:400px; background-color:red;border-radius:25px">
-	<div>
-		<header style="color:azure;font-size:medium;position:absolute">
-			Login
-		</header>
-	</div>
-	<form method="post">
-			<div>
-				<div>
-					<input name="txtUser" style="color:deepskyblue;border-color:aqua;border-radius:20px" placeholder="Username" />
-				</div>
 
-				<div>
-					<input name="txtPass" style="color:deepskyblue;border-color:aqua;border-radius:20px;background-position: bottom" placeholder="Password" />
-				</div>
-				<div>
-					<input type="submit" name="btnLogin" value="Login" />
-				</div>
+	<div class="form-container">
+		<div class="login-card">
+			<div class="column">
+				<h1>Login</h1>
+				<form method="POST">
+					<div class="form-item">
+						<input type="text" class="form-element" placeholder="✉️ |  Username or Email" name="txtUser" required>
+					</div>
+					<div class="form-item">
+						<input type="password" class="form-element" id="password-form" placeholder="🔒 | Password" name="txtPass" required>
+					</div>
+
+					<div class="flex">
+						<button type="submit" class="btn btn-primary" name="btnLogin" value="Login">Sign in</button>
+						<a href="#">Reset your password</a>
+					</div>
+					<div class="sign-in-with-google">
+						<a class="google-button" href="#">
+							<img width=30 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="">
+							Sign in with Google
+						</a>
+					</div>
+
+				</form>
 			</div>
-	</form>
-</div>
-	</body>
+			<div class="column">
+				<h2>Welcome to Football League Management App</h2>
+				<p>If you don't have an account, would you like to register right now</p>
+				<a asp-area="" asp-controller="Home" asp-action="Register">Sign Up</a>
+			</div>
+		</div>
+	</div>
+</body>
 
 </html>
