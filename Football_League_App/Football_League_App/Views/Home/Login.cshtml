@@ -17,7 +17,7 @@ background-size:cover;
 				<h1>Login</h1>
 				<form method="POST">
 					<div class="form-item">
-						<input type="text" class="form-element" placeholder="✉️ |  Username or Email" name="txtUser" required>
+						<input type="text" class="form-element" placeholder="✉️ |  Email Address" name="txtUser" required>
 					</div>
 					<div class="form-item">
 						<input type="password" class="form-element" id="password-form" placeholder="🔒 | Password" name="txtPass" required>
@@ -28,7 +28,7 @@ background-size:cover;
 						<a href="#">Reset your password</a>
 					</div>
 					<div class="sign-in-with-google">
-						<a class="google-button" href="#">
+						<a class="google-button" href="{% provider_login_url 'google' %}">
 							<img width=30 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="">
 							Sign in with Google
 						</a>
@@ -43,6 +43,6 @@ background-size:cover;
 			</div>
 		</div>
 	</div>
-</body>
+	</body>
 
 </html>

@@ -52,7 +52,7 @@ namespace Football_League_App.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet] 
+        [HttpGet] //Dùng phương thức này để lấy data từ máy chủ
         public ActionResult Register()
         {
             return View();

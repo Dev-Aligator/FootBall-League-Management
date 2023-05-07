@@ -98,13 +98,14 @@
 
 
 body {
-    /** background-color: var(--bg-oxford-blue-2); */
     color: var(--text-shadow-blue);
     font-family: 'Poppins', sans-serif;
     line-height: var(--lineHeight-4);
     overflow-y: overlay;
     min-height: 100vh;
+
 }
+
 
 
 
@@ -113,6 +114,7 @@ body {
     justify-content: center;
     align-items: center;
     height: calc(100vh - 100px);
+
 }
 
 .login-card {
@@ -234,9 +236,9 @@ body {
     align-items: center;
 }
 
-    .flex button {
-        margin-right: 20px;
-    }
+.flex button{
+    margin-right: 20px;
+}
 
 /* .social-buttons {
     display: flex;
@@ -327,4 +329,6 @@ body {
         justify-content: center;
     }
 
+    
 }
+

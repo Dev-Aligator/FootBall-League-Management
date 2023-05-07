@@ -13,13 +13,14 @@ background-image:url(https://thuthuatnhanh.com/wp-content/uploads/2022/06/Anh-bo
 background-size:cover;
 ">
 
+
 	<div class="form-container">
 		<div class="register-card">
 			<div class="column">
 				<h1>Sign up</h1>
 				<form id=register-form method="POST">
 					<div class="form-item">
-						<input type="text" class="form-element" placeholder="✉️ |  Username or Email" name="txtUser" required>
+						<input type="text" class="form-element" placeholder="✉️ |  Email Address" name="txtUser" required>
 						<i id="valid_email" class="fa-solid fa-circle-check" style="margin-left: -50px;display:none;"></i>
 						<i id="invalid_email" class="fa-solid fa-circle-exclamation" style="margin-left: -50px;display:none;"></i>
 					</div>
@@ -37,7 +38,6 @@ background-size:cover;
 					</div>
 					<div class="form-item">
 						<input type="password" class="form-element" id="password-form" placeholder="🔒 | Password" name="txtRePass" required>
-
 						<i id="valid_rpassword" class="fa-solid fa-circle-check" style="margin-left: -50px;display:none;"></i>
 						<i id="invalid_rpassword" class="fa-solid fa-circle-exclamation" style="margin-left: -50px;display:none;"></i>
 
@@ -45,7 +45,7 @@ background-size:cover;
 					<label class="terms">
 						<input type="checkbox" id="terms-checkbox" style="display:none;">
 						<span class="switch"></span>
-						I accept the terms of service
+						I accept the <a style="color:#4CF2D2;" target="_blank" asp-area="" asp-controller="Home" asp-action="Privacy">terms of service</a>
 					</label>
 					<div id="error-message" style="color: #f44336; display: none;">You must accept the terms of service.</div>
 					<div class="flex">
@@ -62,6 +62,7 @@ background-size:cover;
 			</div>
 			<div class="column">
 				<p>If you don't have an account, would you like to register right now</p>
+				<a href="{% url 'register:register' %}">Sign Up</a>
 			</div>
 		</div>
 	</div>

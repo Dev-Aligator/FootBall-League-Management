@@ -103,6 +103,7 @@ body {
     line-height: var(--lineHeight-4);
     overflow-y: overlay;
     min-height: 100vh;
+
 }
 
 
@@ -359,8 +360,6 @@ p {
     text-align: center;
 }
 
-
-
 /* Responsive */
 
 @media (max-width: 1300px) {
@@ -375,7 +374,7 @@ p {
         width: 500px;
     }
 
-    
+
 
 
     /* .register-card .column:last-child{
