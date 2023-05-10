@@ -17,14 +17,6 @@ public partial class Match
 
     public int? SoBanThangDoiKhach { get; set; }
 
-    public int? SoTheVangDoiNha { get; set; }
-
-    public int? SoTheVangDoiKhach { get; set; }
-
-    public int? SoTheDoDoiNha { get; set; }
-
-    public int? SoTheDoDoiKhach { get; set; }
-
     public virtual ICollection<Goal> Goals { get; set; } = new List<Goal>();
 
     public virtual Club MaDoiKhachNavigation { get; set; } = null!;

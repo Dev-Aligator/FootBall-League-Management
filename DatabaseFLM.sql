@@ -58,10 +58,6 @@ Create table Matchs
 	MaDoiKhach varchar(7) not null, /*ref MaCLB*/
 	SoBanThangDoiNha int,
 	SoBanThangDoiKhach int,
-	SoTheVangDoiNha int,
-	SoTheVangDoiKhach int,
-	SoTheDoDoiNha int,
-	SoTheDoDoiKhach int,
 	constraint PK_MaTD primary key(MaTD)
 )
 Alter table Matchs add constraint FK_MADOINHA foreign key(MaDoiNha) references Clubs(MaCLB)
@@ -72,13 +68,30 @@ Create table Goals
     ID int identity(1,1),
 	MaBT as 'Goal' + right('000' + cast (ID as varchar(3)), 3) persisted,
 	LoaiBT nvarchar(30), /*Phản lưới nhà, phạt đền, solo, ...*/
-	ThoiDiemGhiBan smalldatetime,
+	Phut int not null,
+	PhutBuGio int,
 	MaCTGhiBan varchar(9) not null,
 	MaCTKienTao varchar(9) not null,
 	MaTD varchar(8) not null,
     constraint PK_MaBT primary key(MaBT),
 )
 Alter table Goals add constraint FK_MATD foreign key(MaTD) references Matchs(MaTD)
+Alter table Goals add constraint Check_Phut check (Phut>=0 and Phut <=90)
+
+Create trigger Goals_PhutBuGio 
+on Goals
+after insert, update
+as
+begin
+	declare @phut int
+	declare @phutbugio int
+	select @phut=Phut, @phutbugio=PhutBuGio from inserted
+	if (@phut not in (45, 90) and @phutbugio>=0)
+	begin
+		print('Phút bù giờ chỉ được gán khi phút chính thức là 45 hoặc 90')
+		rollback tran
+	end
+end
 
 Create table MatchDetails
 (
@@ -93,9 +106,40 @@ Create table MatchDetails
 	SoDuongChuyenDoiKhach int,
 	SoLanPhamLoiDoiNha int,
 	SoLanPhamLoiDoiKhach int,
-	MaCTNhanTheVang varchar(9),
-	MaCTNhanTheDo varchar(9),
+	SoTheVangDoiNha int,
+	SoTheVangDoiKhach int,
+	SoTheDoDoiNha int,
+	SoTheDoDoiKhach int,
+	SoPhatGocDoiNha int,
+	SoPhatGocDoiKhach int,
 )
 Alter table MatchDetails add constraint FK_MATD_CTTD foreign key(MaTD) references Matchs(MaTD)
-Alter table MatchDetails add constraint FK_MACTTV foreign key(MaCTNhanTheVang) references Players(MaCT)
-Alter table MatchDetails add constraint FK_MACTTD foreign key(MaCTNhanTheDo) references Players(MaCT)
+
+Create table Cards
+(
+    ID int identity(1,1),
+	MaThe as 'Card' + right('000' + cast (ID as varchar(3)), 3) persisted,
+	LoaiThe int, ---1: Thẻ vàng, 2: Thẻ đỏ---
+	Phut int not null,
+	PhutBuGio int,
+	MaCTNhanThe varchar(9) not null,
+	MaTD varchar(8) not null,
+    constraint PK_MaThe primary key(MaThe),
+)
+
+Create trigger Cards_PhutBuGio 
+on Cards
+after insert, update
+as
+begin
+	declare @phut int
+	declare @phutbugio int
+	select @phut=Phut, @phutbugio=PhutBuGio from inserted
+	if (@phut not in (45, 90) and @phutbugio>=0)
+	begin
+		print('Phút bù giờ chỉ được gán khi phút chính thức là 45 hoặc 90')
+		rollback tran
+	end
+end
+
+Alter table Cards add constraint FK_MACTNhanThe foreign key(MaCTNhanThe) references Players(MaCT)

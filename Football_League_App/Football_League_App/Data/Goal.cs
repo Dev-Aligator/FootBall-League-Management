@@ -11,7 +11,9 @@ public partial class Goal
 
     public string? LoaiBt { get; set; }
 
-    public DateTime? ThoiDiemGhiBan { get; set; }
+    public int? Phut { get; set; } = null!;
+
+    public int? PhutBuGio { get; set; }
 
     public string MaCtghiBan { get; set; } = null!;
 

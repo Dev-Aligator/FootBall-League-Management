@@ -27,9 +27,17 @@ public partial class MatchDetail
 
     public int? SoLanPhamLoiDoiKhach { get; set; }
 
-    public string? MaCtnhanTheVang { get; set; }
+    public int? SoTheVangDoiNha { get; set; }
 
-    public string? MaCtnhanTheDo { get; set; }
+    public int? SoTheDoDoiNha { get; set; }
+
+    public int? SoTheVangDoiKhach { get; set; }
+
+    public int? SoTheDoDoiKhach { get; set; }
+
+    public int? SoPhatGocDoiNha { get; set; }
+
+    public int? SoPhatGocDoiKhach { get; set; }
 
     public virtual Player? MaCtnhanTheDoNavigation { get; set; }
 
