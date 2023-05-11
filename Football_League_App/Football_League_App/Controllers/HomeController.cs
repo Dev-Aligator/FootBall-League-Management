@@ -1,5 +1,4 @@
-﻿using Football_League_App.Data;
-using Football_League_App.Models;
+﻿using Football_League_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -1,13 +1,13 @@
-﻿using Football_League_App.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
+using Football_League_App.Models;
 
 namespace Football_League_App.Controllers
 {
     public class RegisterController : Controller
     {
-        FlmdbContext flmDb = new FlmdbContext();
+        readonly FlmdbContext flmDb = new();
         public IActionResult Index()
         {
             return View();
@@ -26,7 +26,8 @@ namespace Football_League_App.Controllers
                 return RedirectToAction("Registration", "Register");
             }
             CreateAccount(txtUser, txtPass);
-            return RedirectToAction("Index","Home"); 
+            TempData["Message"] = "Create Account Successfully, Now You Can Login.";
+            return RedirectToAction("Registration","Register"); 
             //Tạo TK thành công thì quay lại trang chủ và hiện thông báo
         }
 
@@ -34,7 +35,7 @@ namespace Football_League_App.Controllers
         {
             foreach (var user in flmDb.Users)
             {
-                if(user.UserName== username)
+                if (user.UserName == username)
                     return true;
             }
             return false;
@@ -42,10 +43,10 @@ namespace Football_League_App.Controllers
         }
 
         private void CreateAccount(string txtUser, string txtPass)
-        {       
-            SqlConnection con = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+        {
+            SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
             string query = "Insert into Users values(@username,@password,@phone,@email,0)";
-            SqlCommand cmd = new SqlCommand(query, con);
+            SqlCommand cmd = new(query, con);
             con.Open();
             try
             {

@@ -78,7 +78,7 @@ Create table Goals
 Alter table Goals add constraint FK_MATD foreign key(MaTD) references Matchs(MaTD)
 Alter table Goals add constraint Check_Phut check (Phut>=0 and Phut <=90)
 
-Create trigger Goals_PhutBuGio 
+Go Create trigger Goals_PhutBuGio /*Chạy Go trước rồi chạy triggers sau*/
 on Goals
 after insert, update
 as
@@ -127,8 +127,8 @@ Create table Cards
     constraint PK_MaThe primary key(MaThe),
 )
 
-Create trigger Cards_PhutBuGio 
-on Cards
+Go Create trigger Cards_PhutBuGio 
+on Cards	
 after insert, update
 as
 begin

@@ -1,0 +1,40 @@
+﻿@{
+	Layout = null;
+	//Không kế thừa từ Layout nào hết
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Football League Managament</title>
+	<link rel="shortcut icon" type="image/png" href="../Images/Logo.png" />
+	<link rel="stylesheet" type="text/css" href="~/css/LayoutDashboard.css">
+</head>
+
+<body>
+
+	<!--Common part of all Pages-->
+	<div class="sidebar-menu">
+		<h1 class="logo">Football League<span> Management</span></h1>
+		<img class="ImgLogo" src="https://scontent.fsgn13-4.fna.fbcdn.net/v/t1.15752-9/346098405_1405243103570888_214991574443637324_n.png?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=xhFGlmkGBysAX8kDjFc&_nc_ht=scontent.fsgn13-4.fna&oh=03_AdQIqJNxHJVQ9uzbtQmcrs0pZY73HSEkhMs8KZjajdjphA&oe=6483EFE7" />
+		<ul>
+			<li><a href="#">Home </a></li>
+			<li>
+				<a href="#">Clubs </a>
+
+			</li>
+			<li><a href="#">Ranking </a></li>
+			<li><a href="#">Transfer </a></li>
+			<li><a href="#">Schedule </a></li>
+			<li><a href="#">Statistic</a></li>
+		</ul>
+	</div>
+	<!--End of Bar-->
+
+	@RenderBody() <!--Phần riêng của mọi trang sẽ nằm ở đây(ngay chính hàm RenderBody-->
+
+</body>
+
+</html>
