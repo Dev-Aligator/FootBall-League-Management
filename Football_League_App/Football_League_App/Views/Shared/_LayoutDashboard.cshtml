@@ -9,8 +9,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Football League Managament</title>
-	<link rel="shortcut icon" type="image/png" href="../Images/Logo.png" />
-	<link rel="stylesheet" type="text/css" href="~/css/LayoutDashboard.css">
+	<link rel="stylesheet" href="~/css/LayoutDashboard.css" asp-append-version="true" />
 </head>
 
 <body>
@@ -22,14 +21,20 @@
 		<ul>
 			<li><a href="#">Home </a></li>
 			<li>
-				<a href="#">Clubs </a>
-
+				<a>Clubs</a>
+				<ul class="dropdown">
+					<li><a asp-controller="Clubs" asp-action="Information">Information</a></li>
+					<li><a asp-controller ="Clubs" asp-action="Players">Players</a></li>
+					<li><a href="#">JS</a></li>
+					<li><a href="#">PHP</a></li>
+				</ul>
 			</li>
 			<li><a href="#">Ranking </a></li>
 			<li><a href="#">Transfer </a></li>
 			<li><a href="#">Schedule </a></li>
 			<li><a href="#">Statistic</a></li>
 		</ul>
+
 	</div>
 	<!--End of Bar-->
 
