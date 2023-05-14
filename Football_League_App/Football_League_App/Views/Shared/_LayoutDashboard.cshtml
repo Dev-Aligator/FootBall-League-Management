@@ -33,6 +33,7 @@
 			<li><a href="#">Transfer </a></li>
 			<li><a href="#">Schedule </a></li>
 			<li><a href="#">Statistic</a></li>
+			<li><a asp-controller="Dashboard" asp-action="Logout">Logout</a></li>
 		</ul>
 	</div>
 	<!--End of Bar-->
@@ -58,7 +59,7 @@
 
 	<h2><strong>@TempData["Message"]</strong></h2>
 	@RenderBody() <!--Phần riêng của mọi trang sẽ nằm ở đây(ngay chính hàm RenderBody-->
-
+	
 	<script src="~/js/RegisterTournament.js"></script>
 </body>
 

@@ -4,16 +4,26 @@ using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic;
 using System;
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Football_League_App.Controllers
 {
+	[Authorize] //Chỉ được vào trang Dashboard nếu đã Login THÀNH CÔNG
     public class DashboardController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
+		[HttpGet]
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			return RedirectToAction("Access", "Login");
+		}
+		[HttpGet]
         public IActionResult MainView()
         {
             return View();
@@ -24,12 +34,13 @@ namespace Football_League_App.Controllers
 			if (CreateTournament(leagueName, txtMaxTeams, txtStartDate, txtEndDate))
 			{
 				TempData["Message"] = "Create A Tournamanent Successfully!";
+				CreateAccountForAllTeams(txtMaxTeams);
 				return RedirectToAction("MainView", "Dashboard");
 			}
 			return RedirectToAction("MainView", "Dashboard");
 		}
 
-		bool CreateTournament(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate)
+		private bool CreateTournament(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate)
 		{
 			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
 			string query = "Set Dateformat dmy\n Insert into League values(@leagueName,@MaxTeams,@startDate,@endDate)";
@@ -53,6 +64,33 @@ namespace Football_League_App.Controllers
 			con.Close();
 			return false;
 			//Hàm này để check xem tạo giải đấu có thành công hay không
+		}
+
+		private void CreateAccountForAllTeams(int para)
+		{
+			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+			string query = "Set Dateformat dmy\n Insert into Users values(@userName,@password,@phone,@email,1)";
+			SqlCommand cmd = new(query, con);
+			con.Open();
+			try
+			{
+				for (int i = 0; i < para; i++)
+				{
+					string userID = "Users" + i.ToString();
+					cmd.Parameters.AddWithValue("userName", userID);
+					cmd.Parameters.AddWithValue("password", 1);
+					cmd.Parameters.AddWithValue("phone", "");
+					cmd.Parameters.AddWithValue("email", "");
+					cmd.ExecuteNonQuery();
+					cmd.Parameters.Clear();
+				}
+			}
+			catch (Exception ex)
+			{
+				TempData["Message"] = "Error: " + ex.Message;
+			}
+			con.Close();
+			//Hàm này sẽ tạo tài khoản mặc định cho tất cả các CLB 
 		}
 	}
 }
