@@ -18,6 +18,4 @@ public partial class Card
     public string MaCtnhanThe { get; set; } = null!;
 
     public string MaTd { get; set; } = null!;
-
-    public virtual Player MaCtnhanTheNavigation { get; set; } = null!;
 }

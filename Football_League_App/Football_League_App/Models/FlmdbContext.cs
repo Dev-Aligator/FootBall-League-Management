@@ -21,6 +21,8 @@ public partial class FlmdbContext : DbContext
 
     public virtual DbSet<Goal> Goals { get; set; }
 
+    public virtual DbSet<League> Leagues { get; set; }
+
     public virtual DbSet<Match> Matchs { get; set; }
 
     public virtual DbSet<MatchDetail> MatchDetails { get; set; }
@@ -57,11 +59,6 @@ public partial class FlmdbContext : DbContext
                 .HasMaxLength(8)
                 .IsUnicode(false)
                 .HasColumnName("MaTD");
-
-            entity.HasOne(d => d.MaCtnhanTheNavigation).WithMany(p => p.Cards)
-                .HasForeignKey(d => d.MaCtnhanThe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MACTNhanThe");
         });
 
         modelBuilder.Entity<Club>(entity =>
@@ -73,7 +70,7 @@ public partial class FlmdbContext : DbContext
                 .IsUnicode(false)
                 .HasComputedColumnSql("('Club'+right('000'+CONVERT([varchar](3),[ID]),(3)))", true)
                 .HasColumnName("MaCLB")
-				.ValueGeneratedNever(); //new . Thêm mới so với cấu hình mặc định
+				.ValueGeneratedNever(); //new
 			entity.Property(e => e.DiaChi).HasMaxLength(40);
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
@@ -106,7 +103,7 @@ public partial class FlmdbContext : DbContext
                 .IsUnicode(false)
                 .HasComputedColumnSql("('Goal'+right('000'+CONVERT([varchar](3),[ID]),(3)))", true)
                 .HasColumnName("MaBT")
-				.ValueGeneratedNever(); //new . Thêm mới so với cấu hình mặc định
+				.ValueGeneratedNever(); //new
 			entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ID");
@@ -130,6 +127,27 @@ public partial class FlmdbContext : DbContext
                 .HasForeignKey(d => d.MaTd)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MATD");
+        });
+
+        modelBuilder.Entity<League>(entity =>
+        {
+            entity.HasKey(e => e.MaLeague).HasName("PK_MaLeague");
+
+            entity.ToTable("League");
+
+            entity.HasIndex(e => e.LeagueName, "UQ__League__02D6A5720B7DB1AA").IsUnique();
+
+            entity.Property(e => e.MaLeague)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasComputedColumnSql("('League'+right('000'+CONVERT([varchar](3),[ID]),(3)))", true)
+				.ValueGeneratedNever(); //new
+			entity.Property(e => e.EndDate).HasColumnType("smalldatetime");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
+            entity.Property(e => e.LeagueName).HasMaxLength(15);
+            entity.Property(e => e.StartDate).HasColumnType("smalldatetime");
         });
 
         modelBuilder.Entity<Match>(entity =>
@@ -174,14 +192,14 @@ public partial class FlmdbContext : DbContext
                 .HasMaxLength(6)
                 .IsUnicode(false)
                 .HasComputedColumnSql("('MDT'+right('000'+CONVERT([varchar](3),[ID]),(3)))", true)
-                .HasColumnName("MaCTTD");
-            entity.Property(e => e.MaTd)
+                .HasColumnName("MaCTTD")
+				.ValueGeneratedNever(); //new
+			entity.Property(e => e.MaTd)
                 .HasMaxLength(8)
                 .IsUnicode(false)
-                .HasColumnName("MaTD")
-				.ValueGeneratedNever(); //new
+                .HasColumnName("MaTD");
 
-			entity.HasOne(d => d.MaTdNavigation).WithMany()
+            entity.HasOne(d => d.MaTdNavigation).WithMany()
                 .HasForeignKey(d => d.MaTd)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MATD_CTTD");
@@ -224,7 +242,7 @@ public partial class FlmdbContext : DbContext
         {
             entity.HasKey(e => e.MaUsers).HasName("PK_MaUsers");
 
-            entity.HasIndex(e => e.UserName, "UQ__Users__C9F284565106847A").IsUnique();
+            entity.HasIndex(e => e.UserName, "UQ__Users__C9F284564AEB2437").IsUnique();
 
             entity.Property(e => e.MaUsers)
                 .HasMaxLength(7)

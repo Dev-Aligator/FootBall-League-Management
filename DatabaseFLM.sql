@@ -1,9 +1,24 @@
 ﻿use master
 
+select *from Users
+select *from League
+
 Create Database FLMDB
 
 use FLMDB
+
 set dateformat dmy
+
+Create Table League
+(
+   ID int identity(1,1),
+   MaLeague as 'League' + right('000' + cast (ID as varchar(3)), 3) persisted,
+   LeagueName Nvarchar(15) unique not null,
+   MaxTeams int not null,
+   StartDate smalldatetime not null,
+   EndDate smalldatetime not null,
+   constraint PK_MaLeague primary key(MaLeague)
+)
 
 Create Table Users
 (

@@ -12,14 +12,15 @@ namespace Football_League_App.Controllers
         [HttpGet]
         public IActionResult Access()
         {
-            return PartialView();
+            return View();
         }
         [HttpPost]
         public IActionResult Access(string txtUser,string txtPass)
         {
             if (isValidAccount(txtUser, txtPass))
                 return RedirectToAction("MainView", "Dashboard"); //Access valid
-            return RedirectToAction("MainView", "Dashboard"); //Invalid Access
+            TempData["Message"] = "Login Failed!";
+			return RedirectToAction("Access", "Login"); //Invalid Access
             //2 Tham số trong hàm này phải trùng tên với tên biến đã đặt ở file Access.cshtml
         }
         

@@ -31,8 +31,6 @@ public partial class Player
 
     public string MaClb { get; set; } = null!;
 
-    public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
-
     public virtual ICollection<Club> Clubs { get; set; } = new List<Club>();
 
     public virtual Club MaClbNavigation { get; set; } = null!;

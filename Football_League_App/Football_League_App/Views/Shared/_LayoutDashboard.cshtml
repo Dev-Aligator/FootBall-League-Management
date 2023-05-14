@@ -19,14 +19,14 @@
 		<h1 class="logo">Football League<span> Management</span></h1>
 		<img class="ImgLogo" src="https://scontent.fsgn13-4.fna.fbcdn.net/v/t1.15752-9/346098405_1405243103570888_214991574443637324_n.png?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=xhFGlmkGBysAX8kDjFc&_nc_ht=scontent.fsgn13-4.fna&oh=03_AdQIqJNxHJVQ9uzbtQmcrs0pZY73HSEkhMs8KZjajdjphA&oe=6483EFE7" />
 		<ul>
-			<li><a href="#">Home </a></li>
+			<li><a asp-controller="Dashboard" asp-action="MainView">Home </a></li>
 			<li>
-				<a>Clubs</a>
+				<a>Tournament</a>
 				<ul class="dropdown">
-					<li><a asp-controller="Clubs" asp-action="Information">Information</a></li>
-					<li><a asp-controller ="Clubs" asp-action="Players">Players</a></li>
-					<li><a href="#">JS</a></li>
-					<li><a href="#">PHP</a></li>
+					<li><a asp-controller="Tournaments" asp-action="Clubs">Clubs</a></li>
+					<li><a asp-controller="Tournaments" asp-action="Players">Players</a></li>
+					<li><a asp-controller="Tournaments" asp-action="Rules">Rules</a></li>
+					<li><a href="javascript:openForm();">Register Tournament</a></li>
 				</ul>
 			</li>
 			<li><a href="#">Ranking </a></li>
@@ -34,12 +34,32 @@
 			<li><a href="#">Schedule </a></li>
 			<li><a href="#">Statistic</a></li>
 		</ul>
-
 	</div>
 	<!--End of Bar-->
 
+	<!-- The form -->
+
+	<div class="form-popup" id="myForm">
+		<form class="form-container" method="post">
+			<h1>Register Tournament</h1>
+			<label>League's Name</label>
+			<input type="text" placeholder="Enter League's Name" name="leagueName" required>
+			<label>Maximum Teams</label>
+			<input type="number" placeholder="Enter Maximum Teams" name="txtMaxTeams" required>
+			<label>Start Date</label>
+			<input type="date" placeholder="Enter Start Date" name="txtStartDate" required/>
+			<label>End Date</label>
+			<input type="date" placeholder="Enter Start Date" name="txtEndDate" required />
+
+			<button type="submit" class="btn" asp-controller="Dashboard" asp-action="MainView">Register</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		</form>
+	</div>
+
+	<h2><strong>@TempData["Message"]</strong></h2>
 	@RenderBody() <!--Phần riêng của mọi trang sẽ nằm ở đây(ngay chính hàm RenderBody-->
 
+	<script src="~/js/RegisterTournament.js"></script>
 </body>
 
 </html>
