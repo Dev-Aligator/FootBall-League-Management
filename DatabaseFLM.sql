@@ -2,6 +2,8 @@
 
 select *from Users
 select *from League
+select * from Players
+select * from Clubs
 
 Create Database FLMDB
 
@@ -32,6 +34,8 @@ Create Table Users
    constraint PK_MaUsers primary key(MaUsers)
 )
 
+insert into Users(Username, Password, Email, LoaiUsers) values ('admin', 'Admin123', 'admin123@gmail.com', 0)
+
 Create Table Clubs
 (
     ID int identity(1,1),
@@ -44,6 +48,11 @@ Create Table Clubs
     /*Khoá ngoại tham chiếu Mã Cầu Thủ*/
 )
 
+alter table Clubs drop FK_MaCT
+alter table Clubs drop column MaCT
+insert into Players values('Rashford', 0, 'Anh', 200000, 180, 70, 'LW', 'CF', '1997-10-31', 10, 'Chan Phai', 'Club001')
+
+
 Create Table Players
 (
     /*Nên nghĩ cách thiết lập mã CT cho dễ phân biệt hơn: Real-Player0001, MU-Player0001*/
@@ -51,17 +60,21 @@ Create Table Players
 	MaCT as 'Player' + right('000' + cast (ID as varchar(3)), 3) persisted,
 	TenCT Nvarchar(30) not null,
 	LoaiCT int not null, /*0: Nội binh | 1: Ngoại binh*/
-	Luong money,
+	QuocTich Nvarchar(30),
+	Luong int,
 	ChieuCao int,
 	CanNang int,
 	ViTriChinh Nvarchar(30),
 	ViTriPhu Nvarchar(30),
-	NgaySinh smalldatetime,
+	NgaySinh date,
 	SoAo int,
 	ChanThuan Nvarchar(30),
 	MaCLB varchar(7) not null,
 	constraint PK_MaCT primary key(MaCT)
 )
+
+
+
 Alter table Players add constraint FK_MACLB foreign key(MaCLB) references Clubs(MaCLB)
 Alter table Clubs add constraint FK_MACT foreign key(MaCT) references Players(MaCT)
 
@@ -158,3 +171,5 @@ begin
 end
 
 Alter table Cards add constraint FK_MACTNhanThe foreign key(MaCTNhanThe) references Players(MaCT)
+
+insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford')
