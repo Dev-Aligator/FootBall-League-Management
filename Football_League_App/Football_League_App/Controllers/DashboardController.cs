@@ -42,7 +42,7 @@ namespace Football_League_App.Controllers
 
 		private bool CreateTournament(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate)
 		{
-			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+			SqlConnection con = new("Data Source=DESKTOP-EKAMM32;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
 			string query = "Set Dateformat dmy\n Insert into League values(@leagueName,@MaxTeams,@startDate,@endDate)";
 			SqlCommand cmd = new(query, con);
 			con.Open();
