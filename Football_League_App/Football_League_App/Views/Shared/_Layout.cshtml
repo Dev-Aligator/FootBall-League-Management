@@ -6,49 +6,83 @@
     <title>Football League Management</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/FLM-2023.navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/FLM-2023.HomePage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Football_League_App.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+          rel="stylesheet" />
 </head>
-<body style="background-color:bisque;
-background-repeat:no-repeat;
-background-image:url(https://thuthuatnhanh.com/wp-content/uploads/2022/06/Anh-bong-da-sieu-dep.jpg);
-background-size:cover;
-">
+<body style="max-height: 100vh;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Football_League_App</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Football League App</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="nav-bar">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                <i style="font-size:larger">
-                                    Home
-                                </i>
+                <div class="links">
+                            <a  asp-area="" asp-controller="Home" asp-action="Index">
+                                        Home
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Access">
-                                <i style="font-size:larger">
-                                    Login
-                                </i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <i style="font-size:larger">
+                        
+                                            
+                            <a  asp-area="" asp-controller="Home" asp-action="Privacy">
                                     About Us
-                                </i>
                             </a>
-                        </li>
-                    </ul>
+
+                             <a class="join-link" asp-area="" asp-controller="Login" asp-action="Access">
+                                Login
+                              </a>
                 </div>
             </div>
         </nav>
     </header>
+    <main>
+        <article>
+
+            <!--
+              - #HERO
+            -->
+
+            <section class="hero" id="home" aria-label="home">
+                <div class="container">
+
+                    <div class="hero-content">
+
+
+                        <h1 class="headline headline-1 section-title">
+                            <span class="span-header"> Football League  </span><span class="span">Application</span>
+                        </h1>
+
+                        <p class="hero-text">
+                            Welcome to our Football League Management App, a powerful tool that empowers you to create and effortlessly manage your very own league. Whether you're a passionate football enthusiast, a coach, or a team organizer, our app provides you with all the necessary features to streamline the league management process.
+                        </p>
+
+
+
+                    </div>
+
+                    <div class="hero-banner">
+
+                        <img src="~/images/football-league-logo.png" width="400" height="600" alt="Ucpc" class="w-100">
+
+                        <img src="~/images/soccer-ball.svg" width="40" height="40" alt="shape" class="shape shape-1">
+
+                        <img src="~/images/trophy.svg" width="40" height="40" alt="shape" class="shape shape-2">
+
+                    </div>
+
+                    <img src="~/images/shadow-1.svg" width="437.5" height="700" alt="" class="hero-bg hero-bg-1">
+
+         
+
+                </div>
+            </section>
+    </article>
+    </main>
     @RenderBody()
     <div class="container">
         <main role="main" class="pb-3">
@@ -57,7 +91,7 @@ background-size:cover;
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container" style="text-align:center;">
             &copy; 2023 - Football_League_App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
