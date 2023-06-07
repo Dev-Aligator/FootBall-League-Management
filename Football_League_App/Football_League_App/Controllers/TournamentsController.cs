@@ -25,6 +25,16 @@ namespace Football_League_App.Controllers
 			return View();
 		}
 
+		public IActionResult AddPlayer()
+		{
+			return View();
+		}
+
+
+		public IActionResult AddPlayerIntoDatabase(Player player)
+		{
+			return View();
+		}
 		public List<Player> GetPlayersList()
 		{
 			List<Player> list = new List<Player>();
@@ -48,7 +58,7 @@ namespace Football_League_App.Controllers
 					CanNang = (int)reader["CanNang"],
 					ViTriChinh = reader["ViTriChinh"].ToString(),
 					ViTriPhu = reader["ViTriPhu"].ToString(),
-					NgaySinh = reader["NgaySinh"].ToString(),
+					NgaySinh = DateTime.Parse(reader["NgaySinh"].ToString()),
 					SoAo = (int)reader["SoAo"],
 					ChanThuan = reader["ChanThuan"].ToString(),
 					MaClb = reader["MaCLB"].ToString(),

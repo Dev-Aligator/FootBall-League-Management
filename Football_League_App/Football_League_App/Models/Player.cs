@@ -13,7 +13,7 @@ public partial class Player
 
     public int LoaiCt { get; set; }
 
-    public string QuocTich { get; set; }
+    public string? QuocTich { get; set; }
 
     public decimal? Luong { get; set; }
 
@@ -25,7 +25,7 @@ public partial class Player
 
     public string? ViTriPhu { get; set; }
 
-    public string? NgaySinh { get; set; }
+    public DateTime? NgaySinh { get; set; }
 
     public int? SoAo { get; set; }
 

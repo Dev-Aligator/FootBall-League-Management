@@ -5,6 +5,18 @@
       "PackagePath": "staticwebassets\\Football_League_App.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\css\\FLM-2023.HomePage.css",
+      "PackagePath": "staticwebassets\\css\\FLM-2023.HomePage.css"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\css\\FLM-2023.navbar.cs",
+      "PackagePath": "staticwebassets\\css\\FLM-2023.navbar.cs"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\css\\FLM-2023.navbar.css",
+      "PackagePath": "staticwebassets\\css\\FLM-2023.navbar.css"
+    },
+    {
       "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\css\\LayoutDashboard.css",
       "PackagePath": "staticwebassets\\css\\LayoutDashboard.css"
     },
@@ -23,6 +35,34 @@
     {
       "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\ball.jpg",
+      "PackagePath": "staticwebassets\\images\\ball.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\ball.svg",
+      "PackagePath": "staticwebassets\\images\\ball.svg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\football-league-logo.png",
+      "PackagePath": "staticwebassets\\images\\football-league-logo.png"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\shadow-1.svg",
+      "PackagePath": "staticwebassets\\images\\shadow-1.svg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\shadow-2.svg",
+      "PackagePath": "staticwebassets\\images\\shadow-2.svg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\soccer-ball.svg",
+      "PackagePath": "staticwebassets\\images\\soccer-ball.svg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\images\\trophy.svg",
+      "PackagePath": "staticwebassets\\images\\trophy.svg"
     },
     {
       "Id": "C:\\Users\\Admin\\Documents\\Code\\FootBall-League-Management\\Football_League_App\\Football_League_App\\wwwroot\\js\\FLM-2023.register.js",

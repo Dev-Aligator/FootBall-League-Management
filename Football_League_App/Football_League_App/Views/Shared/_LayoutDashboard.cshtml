@@ -10,6 +10,13 @@
 	<meta charset="utf-8">
 	<title>Football League Managament</title>
 	<link rel="stylesheet" href="~/css/LayoutDashboard.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/Football_League_App.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/FLM-2023.navbar.css" asp-append-version="true" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+		  rel="stylesheet" />
 </head>
 
 <body>
@@ -59,7 +66,7 @@
 
 	<h2><strong>@TempData["Message"]</strong></h2>
 	@RenderBody() <!--Phần riêng của mọi trang sẽ nằm ở đây(ngay chính hàm RenderBody-->
-	
+	@RenderSection("Scripts", required: false)
 	<script src="~/js/RegisterTournament.js"></script>
 </body>
 
