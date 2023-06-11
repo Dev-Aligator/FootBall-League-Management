@@ -11,6 +11,7 @@ use FLMDB
 
 set dateformat dmy
 
+/*1*/
 Create Table League
 (
    ID int identity(1,1),
@@ -43,14 +44,13 @@ Create Table Clubs
 	TenCLB Nvarchar(20) not null,
 	DiaChi Nvarchar(40) not null,
 	TenSVD Nvarchar(20) not null,
-	constraint PK_MaCLB primary key(MaCLB),
-	MaCT varchar(9) not null
-    /*Khoá ngoại tham chiếu Mã Cầu Thủ*/
+	constraint PK_MaCLB primary key(MaCLB)
 )
 
-alter table Clubs drop FK_MaCT
-alter table Clubs drop column MaCT
-insert into Players values('Rashford', 0, 'Anh', 200000, 180, 70, 'LW', 'CF', '1997-10-31', 10, 'Chan Phai', 'Club001')
+insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford')
+
+/*alter table Clubs drop FK_MaCT 1
+alter table Clubs drop column MaCT 2*/
 
 
 Create Table Players
@@ -61,7 +61,6 @@ Create Table Players
 	TenCT Nvarchar(30) not null,
 	LoaiCT int not null, /*0: Nội binh | 1: Ngoại binh*/
 	QuocTich Nvarchar(30),
-	Luong int,
 	ChieuCao int,
 	CanNang int,
 	ViTriChinh Nvarchar(30),
@@ -70,13 +69,23 @@ Create Table Players
 	SoAo int,
 	ChanThuan Nvarchar(30),
 	MaCLB varchar(7) not null,
+	Luong int,
 	constraint PK_MaCT primary key(MaCT)
 )
+/*alter table Players drop FK_MaCLB 1
+alter table Players drop column MaCLB*/
 
+/*xài cách này nếu gặp lỗi IDENTITY_INSERT is ON*/
+SET IDENTITY_INSERT Players ON
+INSERT INTO Players ([TenCT], [LoaiCT], [QuocTich], [ChieuCao], [CanNang], [ViTriChinh], [ViTriPhu], [NgaySinh], [SoAo], [ChanThuan], [MaCLB],[Luong])
+VALUES ('chin', 1, 'su', 190, 09, 'q', 'w', '15-2-1997', 27, 'Phai', 'Club001', 12000000)
+SET IDENTITY_INSERT Players OFF
 
+/*Còn không thì thêm bình thường như này*/
+insert into Players values(N'Rashford', 0, 'Anh', 180, 70, 'LW', 'CF', '1997-10-31', 10, 'Chan Phai', 'Club001',2000000)
 
-Alter table Players add constraint FK_MACLB foreign key(MaCLB) references Clubs(MaCLB)
-Alter table Clubs add constraint FK_MACT foreign key(MaCT) references Players(MaCT)
+/*Alter table Players add constraint FK_MACLB foreign key(MaCLB) references Clubs(MaCLB)
+Alter table Clubs add constraint FK_MACT foreign key(MaCT) references Players(MaCT)*/
 
 Create table Matchs
 (
@@ -171,5 +180,3 @@ begin
 end
 
 Alter table Cards add constraint FK_MACTNhanThe foreign key(MaCTNhanThe) references Players(MaCT)
-
-insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford')

@@ -33,19 +33,28 @@ namespace Football_League_App.Controllers
 
         private bool isAccountExisted(string username) 
         {
-            foreach (var user in flmDb.Users)
+            //Nên lồng vào try - catch 
+            try
             {
-                if (user.UserName == username)
-                    return true;
-            }
+				foreach (var user in flmDb.Users)
+				{
+					if (user.UserName == username)
+						return true;
+				}
+			}
+            catch(Exception ex) 
+            {
+				TempData["Message"] = "Error: " + ex.Message;
+			}
             return false;
             //Hàm kiểm tra tài khoản có tồn tại trong Db hay chưa
         }
 
         private void CreateAccount(string txtUser, string txtPass)
         {
-            SqlConnection con = new("Data Source=DESKTOP-EKAMM32;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
-            string query = "Insert into Users values(@username,@password,@phone,@email,0)";
+			//SqlConnection con = new("Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+			string query = "Insert into Users values(@username,@password,@phone,@email,0)";
             SqlCommand cmd = new(query, con);
             con.Open();
             try

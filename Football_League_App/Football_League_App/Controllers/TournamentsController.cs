@@ -7,6 +7,8 @@ namespace Football_League_App.Controllers
 	public class TournamentsController : Controller
 	{
 		List<Player> list = new List<Player>();
+		string connectString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True; MultipleActiveResultSets = True; Encrypt = False; TrustServerCertificate = True";
+
 		public IActionResult Index()
 		{
 			return View();
@@ -19,7 +21,6 @@ namespace Football_League_App.Controllers
 
 		public IActionResult Players()
 		{
-
 			list = GetPlayersList();
 			ViewBag.model = list;
 			return View();
@@ -27,18 +28,34 @@ namespace Football_League_App.Controllers
 
 		public IActionResult AddPlayer()
 		{
+			//return RedirectToAction("Players", "Tournaments");
 			return View();
 		}
 
-
-		public IActionResult AddPlayerIntoDatabase(Player player)
+		public IActionResult AddPlayerIntoDatabase() 
 		{
-			return View();
+			AddingPlayersToDb();
+
+			return RedirectToAction("Players", "Tournaments");
+		}
+
+		void AddingPlayersToDb()
+		{
+			try
+			{
+				SqlConnection con = new SqlConnection(connectString);
+				con.Open();
+				SqlCommand cmd = new("Set Dateformat dmy\nINSERT INTO Players ([@TenCT], [@LoaiCT], [@Luong], [@ChieuCao], [@CanNang], [@ViTriChinh], [@ViTriPhu], [@NgaySinh], [@SoAo], [@ChanThuan])", con);
+			    //cmd.Parameters.Add("@TenCT", System.Data.SqlDbType.VarChar).Value = txtTenCT.Text;
+			}
+			catch (Exception ex) 
+			{
+
+			}
 		}
 		public List<Player> GetPlayersList()
 		{
 			List<Player> list = new List<Player>();
-			string connectString = "Data Source=DESKTOP-EKAMM32;Initial Catalog=FLMDB;Integrated Security=True; MultipleActiveResultSets = True; Encrypt = False; TrustServerCertificate = True";
 			string querry = "SELECT * FROM Players";
 			SqlConnection con = new SqlConnection(connectString);
 			con.Open();
@@ -53,7 +70,6 @@ namespace Football_League_App.Controllers
 					TenCt = reader["TenCT"].ToString(),
 					LoaiCt = (int)reader["LoaiCT"],
 					QuocTich = reader["QuocTich"].ToString(),
-					Luong = (int)reader["Luong"],
 					ChieuCao = (int)reader["ChieuCao"],
 					CanNang = (int)reader["CanNang"],
 					ViTriChinh = reader["ViTriChinh"].ToString(),
@@ -62,11 +78,11 @@ namespace Football_League_App.Controllers
 					SoAo = (int)reader["SoAo"],
 					ChanThuan = reader["ChanThuan"].ToString(),
 					MaClb = reader["MaCLB"].ToString(),
-
-
+					Luong = (int)reader["Luong"],
 				};
 				list.Add(player);
 			}
+			con.Close(); //LUÔN NHỚ ĐÓNG KẾT NỐI
 			return list;
 		}
 

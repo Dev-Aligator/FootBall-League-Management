@@ -1,0 +1,16 @@
+﻿body {
+    background-image: linear-gradient(to right,#2C2F48,#1D203E)
+}
+
+.div-clubs {
+    height: 600px;
+    width: 1400px;
+    border: 3px solid;
+    border-radius: 20px;
+    background-color: #2E335A;
+    border-color: white;
+    position:absolute;
+    overflow:hidden;
+    left:70px;
+    bottom:25px;
+}

@@ -25,7 +25,7 @@ public partial class Player
     public int? LoaiCt { get; set; }
 
     [DisplayName("Quốc Tịch")]
-    public string QuocTich { get; set; }
+    public string? QuocTich { get; set; }
 
     [DisplayName("Lương")]
     public int Luong { get; set; }
@@ -37,19 +37,19 @@ public partial class Player
     public int CanNang { get; set; }
 
     [DisplayName("Vị Trí Chính")]
-    public string ViTriChinh { get; set; }
+    public string? ViTriChinh { get; set; }
 
     [DisplayName("Vị Trí Phụ")]
-    public string ViTriPhu { get; set; }
+    public string? ViTriPhu { get; set; }    
 
     [DisplayName("Ngày Sinh")]
-    public DateTime NgaySinh { get; set; }
+    public DateTime? NgaySinh { get; set; }
 
     [DisplayName("Số Áo")]
     public int SoAo { get; set; }
 
     [DisplayName("Chân Thuận")]
-    public string ChanThuan { get; set; }
+    public string? ChanThuan { get; set; }
 
     [DisplayName("Mã CLB")]
     public string MaClb { get; set; } = null!;
