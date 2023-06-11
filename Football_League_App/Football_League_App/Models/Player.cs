@@ -21,7 +21,7 @@ public partial class Player
     public string TenCt { get; set; } = null!;
 
     [Required]
-    [DisplayName("Tên Cầu Thủ")]
+    [DisplayName("Loại Cầu Thủ")]
     public int? LoaiCt { get; set; }
 
     [DisplayName("Quốc Tịch")]

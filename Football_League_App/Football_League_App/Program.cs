@@ -1,3 +1,4 @@
+using Football_League_App.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 });
 
 builder.Services.AddSession();
-
+builder.Services.AddDbContext<FlmdbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
