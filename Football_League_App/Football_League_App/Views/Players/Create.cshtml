@@ -9,7 +9,7 @@
 <main>
 <section class="container">
     <header>Add Player</header>
-        <form asp-action="AddPlayer" class="form">
+        <form asp-action="Create" class="form">
            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="input-box">
@@ -81,10 +81,10 @@
                 </div>
             </div>
         </div>
-            <button asp-action="AddPlayerIntoDatabase" type="submit">Thêm Cầu Thủ</button>
+            <button type="submit">Thêm Cầu Thủ</button>
 
             <div style="text-align: center; margin-top: 5px;">
-                <a asp-action="Players">Back to List</a>
+                <a asp-action="Players" asp-controller="Tournaments">Back to List</a>
             </div>
     </form>
 </section>
