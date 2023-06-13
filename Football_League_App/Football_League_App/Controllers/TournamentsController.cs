@@ -16,6 +16,8 @@ namespace Football_League_App.Controllers
 
 		public IActionResult Clubs()
 		{
+			List<Club> list = GetClubsList();
+			ViewBag.model = list;
 			return View();
 		}
 
@@ -83,6 +85,32 @@ namespace Football_League_App.Controllers
 				list.Add(player);
 			}
 			con.Close(); //LUÔN NHỚ ĐÓNG KẾT NỐI
+			return list;
+		}
+
+		public List<Club> GetClubsList()
+		{
+			List<Club> list = new();
+			string query = "SELECT * FROM Clubs";
+			SqlConnection con = new SqlConnection(connectString);
+			con.Open();
+			SqlCommand sqlCommand = new SqlCommand(query, con);
+			SqlDataReader reader = sqlCommand.ExecuteReader();
+			while (reader.Read())
+			{
+				Club club = new Club()
+				{
+					Id = (int)reader["ID"],
+					TenClb = reader["TenCLB"].ToString(),
+					DiaChi = reader["DiaChi"].ToString(),
+					TenSvd = reader["TenSVD"].ToString(),
+					ImgPath = reader["Img_File"].ToString(),
+				};
+				list.Add(club);
+			}
+			con.Close ();
+			//logo từng đội sẽ đc phân biệt = "MãCLB + định dạng file"
+			//vd club002 -> logo file: "club002.png"
 			return list;
 		}
 

@@ -17,6 +17,8 @@ public partial class Club
 
     public string MaCt { get; set; } = null!;
 
+    public string? ImgPath { get; set; } 
+
     public virtual Player MaCtNavigation { get; set; } = null!;
 
     public virtual ICollection<Match> MatchMaDoiKhachNavigations { get; set; } = new List<Match>();

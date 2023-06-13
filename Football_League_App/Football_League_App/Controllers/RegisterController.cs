@@ -52,7 +52,6 @@ namespace Football_League_App.Controllers
 
         private void CreateAccount(string txtUser, string txtPass)
         {
-			//SqlConnection con = new("Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
 			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
 			string query = "Insert into Users values(@username,@password,@phone,@email,0)";
             SqlCommand cmd = new(query, con);

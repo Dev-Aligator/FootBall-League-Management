@@ -46,8 +46,9 @@ Create Table Clubs
 	TenSVD Nvarchar(20) not null,
 	constraint PK_MaCLB primary key(MaCLB)
 )
+alter table Clubs add Img_File nvarchar(150)
 
-insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford')
+insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford', 'Club003.png')
 
 /*alter table Clubs drop FK_MaCT 1
 alter table Clubs drop column MaCT 2*/

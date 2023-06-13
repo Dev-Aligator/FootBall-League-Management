@@ -85,6 +85,9 @@ public partial class FlmdbContext : DbContext
             entity.Property(e => e.TenSvd)
                 .HasMaxLength(20)
                 .HasColumnName("TenSVD");
+            entity.Property(e => e.ImgPath)
+                .HasMaxLength(150)
+                .HasColumnName("Img_File");
 
             entity.HasOne(d => d.MaCtNavigation).WithMany(p => p.Clubs)
                 .HasForeignKey(d => d.MaCt)

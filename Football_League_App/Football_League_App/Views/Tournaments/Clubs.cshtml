@@ -1,6 +1,7 @@
 ﻿@{
 	Layout = "_LayoutDashboard";
 }
+@model IEnumerable<Club>
 
 <html>
 
@@ -9,7 +10,34 @@
 	</head>
 
 	<body>
-		This is Clubs Body
+		
+		<table class="table">
+			<thead>
+				<tr>
+					<th><img/>Logo</th>
+					<th scope="col">ID</th>
+				    <th scope="col">Name</th>
+				    <th scope="col">Address</th>
+				    <th scope="col">Stadium</th>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach (var item in ViewBag.model)
+			{
+				<tr>
+					<td><img img src="~/images/@item.ImgPath" width="50" height="50" /></td>
+					<th scope="row">@item.Id</th>
+					<td>@item.TenClb</td>
+					<td>@item.DiaChi</td>
+					<td>@item.TenSvd</td>
+					<td>@item.MaCt</td>
+				</tr>
+			}
+
+		</tbody>
+
+		</table>
+
 	</body>
 
 </html>
