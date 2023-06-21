@@ -21,6 +21,13 @@ namespace Football_League_App.Controllers
 			return View();
 		}
 
+		public IActionResult Leagues()
+		{
+			List<League> list = GetLeaguesList();
+			ViewBag.model = list;
+			return View();
+		}
+
 		public IActionResult Players()
 		{
 			list = GetPlayersList();
@@ -111,6 +118,31 @@ namespace Football_League_App.Controllers
 			con.Close ();
 			//logo từng đội sẽ đc phân biệt = "MãCLB + định dạng file"
 			//vd club002 -> logo file: "club002.png"
+			return list;
+		}
+
+		public List<League> GetLeaguesList()
+		{
+			List<League> list = new();
+			string query = "SELECT * FROM League";
+			SqlConnection con = new SqlConnection(connectString);
+			con.Open();
+			SqlCommand sqlCommand = new SqlCommand(query, con);
+			SqlDataReader reader = sqlCommand.ExecuteReader();
+			while (reader.Read())
+			{
+				League league = new League()
+				{
+					Id = (int)reader["ID"],
+					MaLeague = reader["MaLeague"].ToString(),
+					LeagueName = reader["LeagueName"].ToString(),
+					MaxTeams = (int)reader["MaxTeams"],
+					StartDate = DateTime.Parse(reader["StartDate"].ToString()),
+					EndDate = DateTime.Parse(reader["EndDate"].ToString()),
+				};
+				list.Add(league);
+			}
+			con.Close();
 			return list;
 		}
 

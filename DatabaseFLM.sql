@@ -181,3 +181,15 @@ begin
 end
 
 Alter table Cards add constraint FK_MACTNhanThe foreign key(MaCTNhanThe) references Players(MaCT)
+
+CREATE TABLE ClubInLeague (
+    MaCLB varchar(7),
+    MaLeague varchar(9),
+    MatchesPlayed INT,
+    Points INT,
+    Wins INT,
+    Losses INT,
+    Draws INT,
+    FOREIGN KEY (MaCLB) REFERENCES Clubs (MaCLB),
+    FOREIGN KEY (MaLeague) REFERENCES League (MaLeague)
+);

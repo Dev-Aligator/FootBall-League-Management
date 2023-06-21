@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Leagues";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@model Football_League_App.Models.League
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/FLM-2023.PlayerTable.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Page</title>
+</head>
+<body>
+    <form method="GET">
+        <main class="table">
+            <section class="table__header">
+                <h1>League List</h1>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Data...">
+                    <img src="~/images/search.png" alt="">
+                </div>
+                <div class="export__file">
+                    <label for="export-file" class="export__file-btn" title="Export File"></label>
+                    <input type="checkbox" id="export-file">
+                    <div class="export__file-options">
+                        <label>Export As &nbsp; &#10140;</label>
+                        <label for="export-file" id="toPDF">PDF <img src="~/images/pdf.png" alt=""></label>
+                        <label for="export-file" id="toJSON">JSON <img src="~/images/json.png" alt=""></label>
+                        <label for="export-file" id="toCSV">CSV <img src="~/images/csv.png" alt=""></label>
+                        <label for="export-file" id="toEXCEL">EXCEL <img src="~/images/excel.png" alt=""></label>
+                    </div>
+                </div>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> Id <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> League Name <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Max Teams <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Start Date <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> End Date <span class="icon-arrow">&UpArrow;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.model)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>
+                                    <a href="@Url.Action("ClubsInLeague", "Ranking", new { leagueId = @item.MaLeague })">@item.LeagueName</a>
+
+                            </td>
+                                <td>@item.MaxTeams</td>
+                                <td>@item.StartDate</td>
+                                <td>@item.EndDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </form>
+    <form method="post">
+        <div class="card-wrapper">
+            <div class="button-container">
+                <button id="btnAddPlayer" onclick=openForm() class="custom-button">
+                    Add League
+                </button>
+                <button id="btnRemovePlayer" class="custom-button">
+                    Remove League
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+
+</body>
+<script src="~/js/FLM-2023.PlayerScript.js"></script>
+</html>

@@ -24,7 +24,7 @@
 	<!--Common part of all Pages-->
 	<div class="sidebar-menu">
 		<h1 class="logo">Football League<span> Management</span></h1>
-		<img class="ImgLogo" img src="~/images/Logo.png" width="400" height="600" alt="Ucpc" class="w-100" />
+		<img class="ImgLogo" img src="~/images/Logo.png" width="400" height="600" class="w-100" />
 		<ul>
 			<li><a asp-controller="Dashboard" asp-action="MainView">Home </a></li>
 			<li>
@@ -36,9 +36,9 @@
 					<li><a href="javascript:openForm();">Register Tournament</a></li>
 				</ul>
 			</li>
-			<li><a href="#">Ranking </a></li>
+			<li><a asp-controller="Tournaments" asp-action="Leagues">Ranking </a></li>
 			<li><a href="#">Transfer </a></li>
-			<li><a href="#">Schedule </a></li>
+			<li><a asp-controller="Schedule" asp-action="Leagues">Schedule </a></li>
 			<li><a href="#">Statistic</a></li>
 			<li><a asp-controller="Dashboard" asp-action="Logout">Logout</a></li>
 		</ul>

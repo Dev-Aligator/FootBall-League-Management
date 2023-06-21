@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Ranking";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@model List<ClubInLeague>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/FLM-2023.PlayerTable.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Page</title>
+</head>
+<body>
+    <form method="GET">
+        <main class="table">
+            <section class="table__header">
+                <h1>League List</h1>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Data...">
+                    <img src="~/images/search.png" alt="">
+                </div>
+                <div class="export__file">
+                    <label for="export-file" class="export__file-btn" title="Export File"></label>
+                    <input type="checkbox" id="export-file">
+                    <div class="export__file-options">
+                        <label>Export As &nbsp; &#10140;</label>
+                        <label for="export-file" id="toPDF">PDF <img src="~/images/pdf.png" alt=""></label>
+                        <label for="export-file" id="toJSON">JSON <img src="~/images/json.png" alt=""></label>
+                        <label for="export-file" id="toCSV">CSV <img src="~/images/csv.png" alt=""></label>
+                        <label for="export-file" id="toEXCEL">EXCEL <img src="~/images/excel.png" alt=""></label>
+                    </div>
+                </div>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> Position<span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Club <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Played <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Won <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Drawn <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Lost <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Points <span class="icon-arrow">&UpArrow;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var (item, index) in Model.Select((item, index) => (item, index+1)))
+                        {
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td><img src="~/images/@item.Club.ImgPath" alt="">@item.Club.TenClb</td>
+                                <td>@item.MatchesPlayed</td>
+                                <td>@item.Wins</td>
+                                <td>@item.Draws</td>
+                                <td>@item.Losses</td>
+                                <td>@item.Points</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </form>
+    <form method="post">
+        <div class="card-wrapper">
+            <div class="button-container">
+                <button id="btnAddPlayer" onclick=openForm() class="custom-button">
+                    Add League
+                </button>
+                <button id="btnRemovePlayer" class="custom-button">
+                    Remove League
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+
+</body>
+<script src="~/js/FLM-2023.PlayerScript.js"></script>
+</html>
