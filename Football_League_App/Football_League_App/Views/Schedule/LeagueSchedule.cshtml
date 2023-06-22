@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Leagues";
+    ViewBag.Title = "Schedule";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
-@model Football_League_App.Models.League
+@model List<Match>
 <html>
 <head>
     <link rel="stylesheet" href="~/css/FLM-2023.PlayerTable.css" />
@@ -36,24 +36,25 @@
                     <thead>
                         <tr>
                             <th> Id <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> League Name <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Max Teams <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Start Date <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> End Date <span class="icon-arrow">&UpArrow;</span></th>
-                        </tr>
+                            <th> Match Date <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Home Club <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Away Club <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> SVD <span class="icon-arrow">&UpArrow;</span></th>
+
+
+                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ViewBag.model)
+                        @foreach (var item in Model)
                         {
                             <tr>
                                 <th scope="row">@item.Id</th>
-                                <td>
-                                    <a href="@Url.Action("LeagueSchedule",  new { leagueId = @item.MaLeague })">@item.LeagueName</a>
+                                <td>@item.MatchDate</td>
+                                <td><img src="~/images/@item.MaDoiNhaNavigation.ImgPath" alt="">@item.MaDoiNhaNavigation.TenClb</td>
 
-                                </td>
-                                <td>@item.MaxTeams</td>
-                                <td>@item.StartDate</td>
-                                <td>@item.EndDate</td>
+                                <td><img src="~/images/@item.MaDoiKhachNavigation.ImgPath" alt="">@item.MaDoiKhachNavigation.TenClb</td>
+                                <td>@item.MaDoiNhaNavigation.TenSvd</td>
+
                             </tr>
                         }
                     </tbody>

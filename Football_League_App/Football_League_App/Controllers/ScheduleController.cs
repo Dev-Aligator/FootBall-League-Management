@@ -1,6 +1,7 @@
 ﻿using Football_League_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Football_League_App.Controllers
@@ -16,7 +17,11 @@ namespace Football_League_App.Controllers
             return View();
         }
 
-
+        public IActionResult LeagueSchedule(string leagueId)
+        {
+            List<Match> matches = GetMatchesInLeague(leagueId);
+            return View(matches);
+        }
         public void MatchScheduler(string leagueId)
         {
             List<Match> matches = GenerateMatchSchedule(leagueId);
@@ -26,15 +31,17 @@ namespace Football_League_App.Controllers
 
                 foreach (Match match in matches)
                 {
-                    string query = "INSERT INTO Matchs (MaDoiNha, MaDoiKhach, SoBanThangDoiNha, SoBanThangDoiKhach, MatchDate) " +
-                                   "VALUES (@MaDoiNha, @MaDoiKhach, @SoBanThangDoiNha, @SoBanThangDoiKhach, @MatchDate)";
+                    string query = "INSERT INTO Matchs (MaDoiNha, MaDoiKhach, SoBanThangDoiNha, SoBanThangDoiKhach, MatchDate, LeagueId) " +
+                                   "VALUES (@MaDoiNha, @MaDoiKhach, @SoBanThangDoiNha, @SoBanThangDoiKhach, @MatchDate, @leagueId)";
 
                     SqlCommand sqlCommand = new SqlCommand(query, con);
-                    sqlCommand.Parameters.AddWithValue("@MaDoiNha", match.HomeClub.MaClb);
-                    sqlCommand.Parameters.AddWithValue("@MaDoiKhach", match.AwayClub.MaClb);
+                    sqlCommand.Parameters.AddWithValue("@MaDoiNha", match.MaDoiNhaNavigation.MaClb);
+                    sqlCommand.Parameters.AddWithValue("@MaDoiKhach", match.MaDoiKhachNavigation.MaClb);
                     sqlCommand.Parameters.AddWithValue("@SoBanThangDoiNha", 0);
                     sqlCommand.Parameters.AddWithValue("@SoBanThangDoiKhach", 0);
                     sqlCommand.Parameters.AddWithValue("@MatchDate", match.MatchDate);
+                    sqlCommand.Parameters.AddWithValue("@leagueId", leagueId);
+
 
                     sqlCommand.ExecuteNonQuery();
                 }
@@ -78,8 +85,8 @@ namespace Football_League_App.Controllers
                         // Create a match between homeTeam and awayTeam
                         Match match = new Match
                         {
-                            HomeClub = homeTeam.Club,
-                            AwayClub = awayTeam.Club,
+                            MaDoiNhaNavigation = homeTeam.Club,
+                            MaDoiKhachNavigation = awayTeam.Club,
                             MatchDate = CalculateMatchDate(clubs, startDate, endDate, matchSchedule.Count + 1)
                         };
 
@@ -178,6 +185,80 @@ namespace Football_League_App.Controllers
             clubsInLeague = clubsInLeague.OrderByDescending(c => c.Points).ToList();
 
             return clubsInLeague;
+        }
+
+        private List<Match> GetMatchesInLeague(string leagueId)
+        {
+            // Retrieve all matches in the specified league from the database
+            string query = "SELECT * FROM Matchs WHERE LeagueId = @LeagueId ORDER BY MatchDate";
+            SqlConnection con = new SqlConnection(connectString);
+            con.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, con);
+            sqlCommand.Parameters.AddWithValue("@LeagueId", leagueId);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            List<Match> matches = new List<Match>();
+            while (reader.Read())
+            {
+                Match match = new Match
+                {
+                    Id = (int)reader["ID"],
+                    MaTd = reader["MaTD"].ToString(),
+                    MaDoiNha = reader["MaDoiNha"].ToString(),
+                    MaDoiKhach = reader["MaDoiKhach"].ToString(),
+                    SoBanThangDoiNha = reader.IsDBNull(reader.GetOrdinal("SoBanThangDoiNha")) ? null : (int?)reader["SoBanThangDoiNha"],
+                    SoBanThangDoiKhach = reader.IsDBNull(reader.GetOrdinal("SoBanThangDoiKhach")) ? null : (int?)reader["SoBanThangDoiKhach"],
+                    MatchDate = reader.IsDBNull(reader.GetOrdinal("MatchDate")) ? DateTime.MinValue : (DateTime)reader["MatchDate"],
+                    // Populate other properties if needed
+                };
+
+                Club homeClub = GetClubById(match.MaDoiNha);
+                match.MaDoiNhaNavigation = homeClub;
+
+                // Retrieve club information for away team (MaDoiKhach)
+                Club awayClub = GetClubById(match.MaDoiKhach);
+                match.MaDoiKhachNavigation = awayClub;
+
+                matches.Add(match);
+            }
+
+            con.Close();
+            return matches;
+        }
+
+        public Club GetClubById(string clubId)
+        {
+            string query = "SELECT * FROM Clubs WHERE MaCLB = @ClubId";
+
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                con.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(query, con))
+                {
+                    sqlCommand.Parameters.AddWithValue("@ClubId", clubId);
+
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Club club = new Club
+                            {
+                                MaClb = reader["MaCLB"].ToString(),
+                                TenClb = reader["TenCLB"].ToString(),
+                                DiaChi = reader["DiaChi"].ToString(),
+                                TenSvd = reader["TenSVD"].ToString(),
+                                ImgPath = reader["Img_File"].ToString(),
+                                // Populate other club properties from the reader
+                            };
+
+                            return club;
+                        }
+                    }
+                }
+            }
+
+            return null; // Club not found
         }
     }
 }
