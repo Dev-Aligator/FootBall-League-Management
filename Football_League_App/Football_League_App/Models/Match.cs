@@ -10,12 +10,18 @@ public partial class Match
     public string MaTd { get; set; } = null!;
 
     public string MaDoiNha { get; set; } = null!;
+    public Club HomeClub { get; set; }
+
 
     public string MaDoiKhach { get; set; } = null!;
+    public Club AwayClub { get; set; }
 
     public int? SoBanThangDoiNha { get; set; }
 
     public int? SoBanThangDoiKhach { get; set; }
+
+    public DateTime MatchDate { get; set; }
+
 
     public virtual ICollection<Goal> Goals { get; set; } = new List<Goal>();
 

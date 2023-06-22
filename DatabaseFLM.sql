@@ -193,3 +193,6 @@ CREATE TABLE ClubInLeague (
     FOREIGN KEY (MaCLB) REFERENCES Clubs (MaCLB),
     FOREIGN KEY (MaLeague) REFERENCES League (MaLeague)
 );
+
+ALTER TABLE Matchs
+ADD MatchDate DATETIME NULL;
