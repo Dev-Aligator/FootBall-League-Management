@@ -20,10 +20,27 @@ namespace Football_League_App.Controllers
         public IActionResult LeagueSchedule(string leagueId)
         {
             List<Match> matches = GetMatchesInLeague(leagueId);
+            ViewBag.LeagueId = leagueId;
+            string leagueName = GetLeagueName(leagueId);
+            ViewBag.LeagueName = leagueName;
             return View(matches);
         }
-        public void MatchScheduler(string leagueId)
+        public IActionResult MatchScheduler(string leagueId)
         {
+
+            // Delete existing matches for the league
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                con.Open();
+
+                string deleteQuery = "DELETE FROM Matchs WHERE LeagueId = @leagueId";
+                SqlCommand deleteCommand = new SqlCommand(deleteQuery, con);
+                deleteCommand.Parameters.AddWithValue("@leagueId", leagueId);
+                deleteCommand.ExecuteNonQuery();
+
+                con.Close();
+            }
+
             List<Match> matches = GenerateMatchSchedule(leagueId);
             using (SqlConnection con = new SqlConnection(connectString))
             {
@@ -48,6 +65,8 @@ namespace Football_League_App.Controllers
 
                 con.Close();
             }
+
+            return RedirectToAction("LeagueSchedule", new { leagueId = leagueId });
         }
 
         private List<Match> GenerateMatchSchedule(string leagueId)
@@ -75,6 +94,18 @@ namespace Football_League_App.Controllers
             }
 
             con.Close();
+
+            // Shuffle the list of clubs
+            Random random = new Random();
+            int n = clubs.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                ClubInLeague temp = clubs[k];
+                clubs[k] = clubs[n];
+                clubs[n] = temp;
+            }
 
             foreach (ClubInLeague homeTeam in clubs)
             {
@@ -259,6 +290,29 @@ namespace Football_League_App.Controllers
             }
 
             return null; // Club not found
+        }
+
+        private string GetLeagueName(string leagueId)
+        {
+            string leagueName = string.Empty;
+            string query = "SELECT LeagueName FROM League WHERE MaLeague = @LeagueId";
+
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                con.Open();
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                sqlCommand.Parameters.AddWithValue("@LeagueId", leagueId);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    leagueName = reader["LeagueName"].ToString();
+                }
+
+                con.Close();
+            }
+
+            return leagueName;
         }
     }
 }

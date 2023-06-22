@@ -28,6 +28,13 @@ namespace Football_League_App.Controllers
 			return View();
 		}
 
+		public IActionResult LeaguesInfo()
+		{
+			List<League> list = GetLeaguesList();
+			ViewBag.model = list;
+			return View();
+		}
+
 		public IActionResult Players()
 		{
 			list = GetPlayersList();

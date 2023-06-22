@@ -1,0 +1,60 @@
+﻿@model Football_League_App.Models.League
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<main>
+    <section class="container">
+        <header>Edit @Model.LeagueName Info</header>
+        <form asp-action="Editing" method="post" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="input-box">
+                <label>League Name</label>
+                <input asp-for="LeagueName" placeholder="League Name" />
+                <span asp-validation-for="LeagueName" class="text-danger"></span>
+            </div>
+
+            <div class="input-box" style="display:none;">
+                <label>League Code</label>
+                <input asp-for="MaLeague" placeholder="League Code" />
+                <span asp-validation-for="MaLeague" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label>Max Number of Teams</label>
+                <input asp-for="MaxTeams" placeholder="Max Teams" />
+                <span asp-validation-for="MaxTeams" class="text-danger"></span>
+            </div>
+
+            <div class="column">
+                <div class="input-box">
+                    <label>Start Date</label>
+                    <input asp-for="StartDate" placeholder="Start Date" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label>End Date</label>
+                    <input asp-for="EndDate" placeholder="End Date" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit">Save League</button>
+
+            <div style="text-align: center; margin-top: 5px;">
+                <a asp-action="LeaguesInfo" asp-controller="Tournaments">Back to List</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Football_League_App.Models;
 
 public partial class Match
@@ -10,11 +10,9 @@ public partial class Match
     public string MaTd { get; set; } = null!;
 
     public string MaDoiNha { get; set; } = null!;
-    public Club HomeClub { get; set; }
-
 
     public string MaDoiKhach { get; set; } = null!;
-    public Club AwayClub { get; set; }
+
 
     public int? SoBanThangDoiNha { get; set; }
 
