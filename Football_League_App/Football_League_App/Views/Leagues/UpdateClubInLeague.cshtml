@@ -1,0 +1,78 @@
+﻿@model Football_League_App.Models.ClubInLeague
+
+@{
+    ViewData["Title"] = "UpdateClubInLeague";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<main>
+    <section class="container">
+        <header>Update @Model.Club.TenClb Info in @ViewBag.leagueName </header>
+        <form asp-action="UpdateClubInLeague" method="post" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="column">
+                <div class="input-box">
+                    <label>Club Name</label>
+                    <input asp-for="Club.TenClb" placeholder="Club Name" disabled/>
+                    <span asp-validation-for="Club.TenClb" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label>League Name</label>
+                    <input placeholder="League Name" value="@ViewBag.leagueName" disabled/>
+                    <input name="leagueId" value="@ViewBag.leagueId" style="display: none;" />
+                    <input name="clubId" value="@Model.Club.MaClb" style="display: none;" />
+
+
+                </div>
+            </div>
+
+            
+
+            <div class="input-box">
+                <label>Matches Played</label>
+                <input asp-for="MatchesPlayed" placeholder="Matches Played" />
+                <span asp-validation-for="MatchesPlayed" class="text-danger"></span>
+            </div>
+            <div class="input-box">
+                <label>Points</label>
+                <input asp-for="Points" placeholder="Points" />
+                <span asp-validation-for="Points" class="text-danger"></span>
+            </div>
+
+            <div class="column">
+                <div class="input-box">
+                    <label>Wins</label>
+                    <input asp-for="Wins" placeholder="Number of win matches" />
+                    <span asp-validation-for="Wins" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label>Losses</label>
+                    <input asp-for="Losses" placeholder="Number of lost matches" />
+                    <span asp-validation-for="Losses" class="text-danger"></span>
+                </div>
+
+                <div class="input-box">
+                    <label>Draws</label>
+                    <input asp-for="Draws" placeholder="Number of draw matches" />
+                    <span asp-validation-for="Draws" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit">Save Club Info</button>
+
+
+            <div style="text-align: center; margin-top: 5px;">
+                <a href="@Url.Action("ModifyClubs",  new { leagueId = ViewBag.leagueId })">Back to Clubs List</a>
+
+            </div>
+        </form>
+    </section>
+</main>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
