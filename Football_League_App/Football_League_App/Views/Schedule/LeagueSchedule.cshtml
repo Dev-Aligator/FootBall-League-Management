@@ -18,7 +18,7 @@
         <div class="matchs" id="match-date">
             @foreach (var (item, index) in Model.Select((item, index) => (item, index + 1)))
             {
-            <div class="match">
+                <div class="match clickable-div" onclick="redirectToMatchDetails('@item.MaTd')">
                 <div class="match-info">
                     <h4 class="group">@ViewBag.LeagueName</h4>
                     <h4>Match Number<span class="badge">@index</span> </h4>
@@ -64,6 +64,13 @@
         </div>
 
     </form>
+
+    <script>
+        function redirectToMatchDetails(matchId) {
+            // Perform the desired action here
+            window.location.href = "/Schedule/MatchDetails?matchId=" + matchId;
+        }
+    </script>
 
 
 </body>

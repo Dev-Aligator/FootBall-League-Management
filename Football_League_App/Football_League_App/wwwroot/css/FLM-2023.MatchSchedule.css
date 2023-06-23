@@ -81,7 +81,16 @@ body {
     font-size: 1.6rem;
     font-weight: bold;
     color: var(--text-dark);
+    cursor: pointer !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
+
+
+.match:hover {
+        transform: scale(1.05) !important;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+    }
+
 
 .match-info {
     display: flex;
@@ -172,3 +181,5 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     }
 }
+
+

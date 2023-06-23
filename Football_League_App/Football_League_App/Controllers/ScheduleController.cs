@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Football_League_App.Controllers
@@ -68,6 +69,49 @@ namespace Football_League_App.Controllers
 
             return RedirectToAction("LeagueSchedule", new { leagueId = leagueId });
         }
+
+
+        public IActionResult MatchDetails(string matchId)
+        {
+            Match match = null;
+            string leagueName = null;
+
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                string query = "SELECT * FROM Matchs WHERE MaTD = @MatchId";
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                sqlCommand.Parameters.AddWithValue("@MatchId", matchId);
+                con.Open();
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    match = new Match
+                    {
+                        MaTd = reader["MaTD"].ToString(),
+                        MaDoiNha = reader["MaDoiNha"].ToString(),
+                        MaDoiKhach = reader["MaDoiKhach"].ToString(),
+                        SoBanThangDoiNha = (int)reader["SoBanThangDoiNha"],
+                        SoBanThangDoiKhach = (int)reader["SoBanThangDoiKhach"],
+                        MatchDate = DateTime.Parse(reader["MatchDate"].ToString()),
+
+                    };
+
+                    string leagueId = reader["LeagueId"].ToString();
+                    match.MaDoiNhaNavigation = GetClubById(match.MaDoiNha);
+                    match.MaDoiKhachNavigation = GetClubById(match.MaDoiKhach);
+                    leagueName = GetLeagueName(leagueId);
+
+                }
+				con.Close();
+			}
+
+            ViewBag.leagueName = leagueName;
+			return View(match);
+		}
+
+
 
         private List<Match> GenerateMatchSchedule(string leagueId)
         {
