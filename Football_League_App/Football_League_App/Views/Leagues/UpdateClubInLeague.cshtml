@@ -6,6 +6,8 @@
 }
 
 <link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <main>
     <section class="container">
         <header>Update @Model.Club.TenClb Info in @ViewBag.leagueName </header>
@@ -68,6 +70,39 @@
             </div>
         </form>
     </section>
+
+
+    <script>
+        $(document).ready(function () {
+            // Get the input elements and submit button
+            var matchesPlayedInput = $('input[name="MatchesPlayed"]');
+            var winsInput = $('input[name="Wins"]');
+            var lossesInput = $('input[name="Losses"]');
+            var drawsInput = $('input[name="Draws"]');
+            var submitButton = $('button[type="submit"]');
+
+            // Function to check if matches played equals wins + losses + draws
+            function validateMatchesPlayed() {
+                var matchesPlayed = parseInt(matchesPlayedInput.val());
+                var wins = parseInt(winsInput.val());
+                var losses = parseInt(lossesInput.val());
+                var draws = parseInt(drawsInput.val());
+
+                if (matchesPlayed === wins + losses + draws) {
+                    submitButton.prop('disabled', false);
+                } else {
+                    submitButton.prop('disabled', true);
+                }
+            }
+
+            // Call the validateMatchesPlayed function whenever any input value changes
+            matchesPlayedInput.on('input', validateMatchesPlayed);
+            winsInput.on('input', validateMatchesPlayed);
+            lossesInput.on('input', validateMatchesPlayed);
+            drawsInput.on('input', validateMatchesPlayed);
+        });
+    </script>
+
 </main>
 
 

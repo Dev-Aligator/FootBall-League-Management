@@ -31,7 +31,7 @@
                             <th> Club ID <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Played <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Points <span class="icon-arrow">&UpArrow;</span></th>
-                            <th></th>
+                            <th class="small-width-column"></th>
 
                         </tr>
                     </thead>
@@ -44,10 +44,10 @@
                                 <td>@item.Club.MaClb</td>
                                 <td>@item.MatchesPlayed</td>
                                 <td>@item.Points</td>
-                                <td>
-                                    <a href="@Url.Action("UpdateClubInLeague", "Leagues" , new { ClubId = @item.Club.MaClb,  leagueId = ViewBag.LeagueId  })"><img src="~/images/edit-pencil.svg" /></a>
+                                <td class="small-width-column">
+                                    <a href="@Url.Action("UpdateClubInLeague", "Leagues" , new { ClubId = @item.Club.MaClb,  leagueId = ViewBag.LeagueId  })" class="rounded-anchor"><img src="~/images/edit-pencil.svg" /></a>
 
-                                    <a href="@Url.Action("RemoveClubFromLeague", "Leagues" , new { ClubId = @item.Club.MaClb,  leagueId = ViewBag.LeagueId  })"><img src="~/images/remove.svg" /></a>
+                                    <a href="@Url.Action("RemoveClubFromLeague", "Leagues" , new { ClubId = @item.Club.MaClb,  leagueId = ViewBag.LeagueId  })" class="rounded-anchor"><img src="~/images/remove.svg" /></a>
                                 </td>
 
                             </tr>

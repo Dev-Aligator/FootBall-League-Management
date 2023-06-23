@@ -132,3 +132,17 @@ h2 {
         row-gap: 15px;
     }
 }
+
+.small-width-column {
+    width: 50px; /* Adjust the width as needed */
+}
+
+.rounded-anchor {
+    display: inline-block;
+    padding: 8px;
+    transition: transform 0.3s ease;
+}
+
+    .rounded-anchor:hover {
+        transform: scale(1.1);
+    }

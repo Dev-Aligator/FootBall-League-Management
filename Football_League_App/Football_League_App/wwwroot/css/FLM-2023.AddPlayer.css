@@ -143,3 +143,8 @@ h2{
         row-gap: 15px;
     }
 }
+
+
+button[type="submit"]:disabled {
+    cursor: not-allowed !important;
+}
