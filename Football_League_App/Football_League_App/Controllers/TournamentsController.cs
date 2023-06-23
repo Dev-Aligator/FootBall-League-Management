@@ -68,6 +68,7 @@ namespace Football_League_App.Controllers
 			{
 
 			}
+			//check it later, club first
 		}
 		public List<Player> GetPlayersList()
 		{
@@ -126,6 +127,34 @@ namespace Football_League_App.Controllers
 			//logo từng đội sẽ đc phân biệt = "MãCLB + định dạng file"
 			//vd club002 -> logo file: "club002.png"
 			return list;
+		}
+
+		public IActionResult AddClub(string clubName, string clubAddr, string clubStad, string imgFile)
+		{
+			AddClubToDb(clubName,clubAddr, clubStad, imgFile);
+			return RedirectToAction("Clubs", "Tournaments");
+		}
+
+		void AddClubToDb(string clubName, string clubAddr, string clubStad, string imgFile)
+		{
+			SqlConnection con = new SqlConnection(connectString);
+			SqlCommand cmd = new("Insert Into Clubs values(@tenclub,@diachi,@tensvd,@imgpath)", con);
+			con.Open();
+			try
+			{
+				cmd.Parameters.Add("@tenclub", System.Data.SqlDbType.NVarChar).Value = clubName;
+				cmd.Parameters.Add("@diachi", System.Data.SqlDbType.NVarChar).Value = clubAddr;
+				cmd.Parameters.Add("@tensvd", System.Data.SqlDbType.NVarChar).Value = clubStad;
+				//imgFile="" tạm để imgpath quay lại sau
+				cmd.Parameters.Add("@imgpath", System.Data.SqlDbType.NVarChar).Value = " ";
+				cmd.ExecuteNonQuery();
+				TempData["Message"] = "Add Club To Db Success!";
+			}
+			catch (Exception ex)
+			{
+				TempData["Message"] = "Failed To Add Club To Db, Error: " + ex.Message;
+			}
+			con.Close();
 		}
 
 		public List<League> GetLeaguesList()
