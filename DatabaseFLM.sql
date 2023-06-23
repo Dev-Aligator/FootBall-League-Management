@@ -49,6 +49,7 @@ Create Table Clubs
 alter table Clubs add Img_File nvarchar(150)
 
 insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford', 'Club003.png')
+insert into Clubs values('Real Madrid', 'Madrid', 'Santiago Bernabeu', 'Club004.png')
 
 /*alter table Clubs drop FK_MaCT 1
 alter table Clubs drop column MaCT 2*/
