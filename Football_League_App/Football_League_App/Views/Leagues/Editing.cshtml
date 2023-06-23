@@ -45,6 +45,12 @@
 
             <button type="submit">Save League</button>
 
+
+            <button id="btnAddPlayer" asp-area="" asp-action="ModifyClubs" asp-controller="Leagues" asp-route-leagueId="@Model.MaLeague" class="custom-button" style="margin-top:5px; background-color:forestgreen">
+                        Modify Clubs List
+                    </button>
+     
+
             <div style="text-align: center; margin-top: 5px;">
                 <a asp-action="LeaguesInfo" asp-controller="Tournaments">Back to List</a>
             </div>

@@ -1,5 +1,6 @@
 ﻿using Football_League_App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 
 namespace Football_League_App.Controllers
@@ -51,8 +52,100 @@ namespace Football_League_App.Controllers
         }
 
 
-        
+        public IActionResult ModifyClubs(string leagueId)
+        {
+            List<ClubInLeague> clubs = GetClubsInLeague(leagueId);
+            League league = GetLeagueById(leagueId);
+            ViewBag.leagueName = league.LeagueName;
+            ViewBag.leagueId = leagueId;
 
+            List<Club> allClubs = GetClubsFromDatabase(); // Fetch clubs from the database using your SQL query
+
+            SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
+
+            ViewData["MaClb"] = clubList;
+            return View(clubs);
+        }
+
+        public IActionResult RemoveClubFromLeague(string clubId, string leagueId)
+        {
+            string query = "DELETE FROM ClubInLeague WHERE MaCLB = @clubId AND MaLeague= @leagueId";
+            SqlConnection con = new SqlConnection(connectString);
+            con.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, con);
+            sqlCommand.Parameters.AddWithValue("@clubId", clubId);
+            sqlCommand.Parameters.AddWithValue("@leagueId", leagueId);
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+           
+         
+            con.Close();
+            return RedirectToAction("ModifyClubs", new { leagueId = leagueId });
+
+        }
+
+
+        public IActionResult AddClubToLeague(string selectedClub, string leagueId)
+        {
+            string query = "INSERT INTO ClubInLeague VALUES (@MaClb, @MaLeague, 0 , 0 , 0 ,0 ,0)";
+
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand command = new SqlCommand(query, con);
+            command.Parameters.AddWithValue("@MaClb", selectedClub);
+            command.Parameters.AddWithValue("@MaLeague", leagueId);
+
+            con.Open();
+            command.ExecuteNonQuery();
+            con.Close();
+
+
+            return RedirectToAction("ModifyClubs", new { leagueId = leagueId });
+        }
+
+        private List<ClubInLeague> GetClubsInLeague(string leagueId)
+        {
+            string query = "SELECT c.*, cil.MatchesPlayed, cil.Points, cil.Wins, cil.Losses, cil.Draws " +
+                           "FROM Clubs c " +
+                           "INNER JOIN ClubInLeague cil ON c.MaCLB = cil.MaCLB " +
+                           "WHERE cil.MaLeague = @LeagueId";
+
+            SqlConnection con = new SqlConnection(connectString);
+            con.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, con);
+            sqlCommand.Parameters.AddWithValue("@LeagueId", leagueId);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            List<ClubInLeague> clubsInLeague = new List<ClubInLeague>();
+            while (reader.Read())
+            {
+                Club club = new Club()
+                {
+                    MaClb = reader["MaCLB"].ToString(),
+                    TenClb = reader["TenCLB"].ToString(),
+                    DiaChi = reader["DiaChi"].ToString(),
+                    TenSvd = reader["TenSVD"].ToString(),
+                    ImgPath = reader["Img_File"].ToString()
+                };
+
+                ClubInLeague clubInLeague = new ClubInLeague()
+                {
+                    ClubId = club.MaClb,
+                    Club = club,
+                    MatchesPlayed = (int)reader["MatchesPlayed"],
+                    Points = (int)reader["Points"],
+                    Wins = (int)reader["Wins"],
+                    Losses = (int)reader["Losses"],
+                    Draws = (int)reader["Draws"]
+                };
+
+                clubsInLeague.Add(clubInLeague);
+            }
+
+            con.Close();
+            clubsInLeague = clubsInLeague.OrderByDescending(c => c.Points).ToList();
+
+            return clubsInLeague;
+        }
 
         public League GetLeagueById(string leagueId)
         {
@@ -170,7 +263,40 @@ namespace Football_League_App.Controllers
             return list;
         }
 
-    
+
+        public List<Club> GetClubsFromDatabase()
+        {
+            List<Club> clubs = new List<Club>();
+
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                string query = "SELECT MaClb FROM Clubs";
+
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                con.Open();
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string maClb = reader["MaClb"].ToString();
+
+                    Club club = new Club
+                    {
+                        MaClb = maClb
+                        // Populate other properties if needed
+                    };
+
+                    clubs.Add(club);
+                }
+
+                con.Close();
+            }
+
+            return clubs;
+        }
+
+
 
     }
 }

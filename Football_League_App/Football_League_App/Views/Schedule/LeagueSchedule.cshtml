@@ -53,7 +53,17 @@
     <div class="scroll-top">
         <img src="arrow.png" alt="arrow" />
     </div>
+    
+    <form method="post">
+        <div class="card-wrapper">
+            <div class="button-container">
+                <button asp-controller="Schedule" asp-action="MatchScheduler" asp-route-leagueId="@ViewBag.leagueId" class="custom-button">
+                    Generate New Schedule
+                </button>
+            </div>
+        </div>
 
+    </form>
 
 
 </body>

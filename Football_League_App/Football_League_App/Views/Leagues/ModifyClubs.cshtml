@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "ModifyClub";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@model List<ClubInLeague>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/FLM-2023.PlayerTable.css" />
+    <link rel="stylesheet" href="~/css/FLM-2023.ModifyClubs.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Page</title>
+</head>
+<body>
+    <form method="GET">
+        <main class="table">
+            <section class="table__header">
+                <h1>Clubs in @ViewBag.leagueName</h1>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Data...">
+                    <img src="~/images/search.png" alt="">
+                </div>
+                
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> Id<span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Club <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Club ID <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Played <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Points <span class="icon-arrow">&UpArrow;</span></th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var (item, index) in Model.Select((item, index) => (item, index + 1)))
+                        {
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td><img src="~/images/@item.Club.ImgPath" alt="">@item.Club.TenClb</td>
+                                <td>@item.Club.MaClb</td>
+                                <td>@item.MatchesPlayed</td>
+                                <td>@item.Points</td>
+                                <td> <a href="@Url.Action("RemoveClubFromLeague", "Leagues" , new { ClubId = @item.Club.MaClb,  leagueId = ViewBag.LeagueId  })"><img src="~/images/remove.svg" /></a></td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </form>
+
+    <section class="container">
+        <form asp-action="AddClubToLeague" method="post" class="form">
+            <div class="select-box">
+                <input name="leagueId" value="@ViewBag.LeagueId" style="display: none;"/>
+
+                <select class="form-control" name="selectedClub" asp-items=" (IEnumerable<SelectListItem>)ViewBag.MaClb" required>
+                    <option disabled selected>Choose Club to Add</option>
+
+                </select>
+
+            </div>
+            <button type="submit">Add Club</button>
+        </form>
+    </section>
+
+
+
+</body>
+<script src="~/js/FLM-2023.PlayerScript.js"></script>
+</html>
