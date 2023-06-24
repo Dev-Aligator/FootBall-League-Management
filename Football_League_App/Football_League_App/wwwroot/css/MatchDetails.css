@@ -32,6 +32,14 @@ body {
     line-height: 1.5;
     color: var(--color-text-primary);
     background-color: var(--color-bg-secondary);
+
+}
+
+section.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .match {
@@ -222,16 +230,147 @@ body {
     color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
     box-shadow: 0 4px 8px 0 rgba(48, 48, 48, 0.25);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+    .match-bet-place:hover {
+        background-color: #325fc9;
+        transform: translateX(-50%) scale(1.1);
+    }
+
 .container {
-    position: absolute;
-    top: 5%;
-    left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
+}
+
+
+.details-container {
+    display: none;
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    margin: 0 15px;
+    padding: 10px 20px;
+    border-radius: 7px;
+    margin-top: 30px;
+    animation: showDetailsContainer 0.5s forwards;
+}
+
+@keyframes showDetailsContainer {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+    .details-container .skill-box {
+        width: 100%;
+        margin: 25px 0;
+    }
+
+.skill-box .title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.title-bar {
+    display: flex;
+}
+
+.skill-box .end-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 300;
+    color: #333;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.skill-box .mid-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.skill-box .skill-bar {
+    height: 8px;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 6px;
+    background: rgba(190, 50, 50, 0.4);
+}
+
+.skill-bar .skill-per {
+    position: relative;
+    display: block;
+    height: 100%;
+    border-radius: 6px;
+    background: #b3c4f1;
+    animation: progress 0.4s ease-in-out forwards;
+    opacity: 0;
+}
+
+.skill-per.shots {
+    width: 70%;
+}
+
+.skill-per.possession {
+    width: 70%;
+    animation-delay: 0.1s;
+}
+
+.skill-per.red-cards {
+    width: 50%;
+    animation-delay: 0.2s;
+}
+
+.skill-per.yellow-cards {
+    width: 30%;
+    animation-delay: 0.3s;
+}
+
+.skill-per.corner-kicks {
+    width: 60%;
+    animation-delay: 0.4s;
+}
+
+.skill-per.fouls {
+    width: 15%;
+    animation-delay: 0.5s;
+}
+
+
+.skill-per.passes {
+    width: 25%;
+    animation-delay: 0.6s;
+}
+
+
+
+
+@keyframes progress {
+    0% {
+        width: 0;
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

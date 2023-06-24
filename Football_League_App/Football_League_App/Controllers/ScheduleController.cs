@@ -73,17 +73,68 @@ namespace Football_League_App.Controllers
 
         public IActionResult MatchDetails(string matchId)
         {
-            Match match = null;
+            MatchDetail matchDetail = null;
             string leagueName = null;
 
             using (SqlConnection con = new SqlConnection(connectString))
             {
-                string query = "SELECT * FROM Matchs WHERE MaTD = @MatchId";
+                string query = "SELECT md.*, leagueId FROM MatchDetails md, Matchs m WHERE md.MaTD = m.MaTD AND md.MaTD =  @MatchId";
                 SqlCommand sqlCommand = new SqlCommand(query, con);
                 sqlCommand.Parameters.AddWithValue("@MatchId", matchId);
                 con.Open();
 
                 SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    matchDetail = new MatchDetail
+                    {
+                        MaTd = reader["MaTD"].ToString(),
+                        KiemSoatBongDoiNha = (int)reader["KiemSoatBongDoiNha"],
+                        KiemSoatBongDoiKhach = (int)reader["KiemSoatBongDoiKhach"],
+                        SoCuSutDoiNha = (int)reader["SoCuSutDoiNha"],
+                        SoCuSutDoiKhach = (int)reader["SoCuSutDoiKhach"],
+                        SoDuongChuyenDoiNha = (int)reader["SoDuongChuyenDoiNha"],
+                        SoDuongChuyenDoiKhach = (int)reader["SoDuongChuyenDoiKhach"],
+                        SoLanPhamLoiDoiNha = (int)reader["SoLanPhamLoiDoiNha"],
+                        SoLanPhamLoiDoiKhach = (int)reader["SoLanPhamLoiDoiKhach"],
+                        SoTheVangDoiNha = (int)reader["SoTheVangDoiNha"],
+                        SoTheVangDoiKhach = (int)reader["SoTheVangDoiKhach"],
+                        SoTheDoDoiNha = (int)reader["SoTheDoDoiNha"],
+                        SoTheDoDoiKhach = (int)reader["SoTheDoDoiKhach"],
+                        SoPhatGocDoiNha = (int)reader["SoPhatGocDoiNha"],
+                        SoPhatGocDoiKhach = (int)reader["SoPhatGocDoiKhach"],
+                        
+                    };
+
+                    matchDetail.MaTdNavigation = GetMatchById(matchId);
+                    string leagueId = reader["leagueId"].ToString();
+
+                    leagueName = GetLeagueName(leagueId);
+
+                }
+
+
+				con.Close();
+			}
+
+            ViewBag.leagueName = leagueName;
+			return View(matchDetail);
+		}
+
+        public Match GetMatchById(string matchId)
+        {
+            Match match = null;
+
+            using (SqlConnection connection = new SqlConnection(connectString))
+            {
+                string query = "SELECT * FROM Matchs WHERE MaTD = @MatchId";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MatchId", matchId);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -94,22 +145,18 @@ namespace Football_League_App.Controllers
                         MaDoiKhach = reader["MaDoiKhach"].ToString(),
                         SoBanThangDoiNha = (int)reader["SoBanThangDoiNha"],
                         SoBanThangDoiKhach = (int)reader["SoBanThangDoiKhach"],
-                        MatchDate = DateTime.Parse(reader["MatchDate"].ToString()),
-
+                        MatchDate = DateTime.Parse(reader["MatchDate"].ToString()),                       
                     };
 
-                    string leagueId = reader["LeagueId"].ToString();
                     match.MaDoiNhaNavigation = GetClubById(match.MaDoiNha);
                     match.MaDoiKhachNavigation = GetClubById(match.MaDoiKhach);
-                    leagueName = GetLeagueName(leagueId);
-
                 }
-				con.Close();
-			}
 
-            ViewBag.leagueName = leagueName;
-			return View(match);
-		}
+                connection.Close();
+            }
+
+            return match;
+        }
 
 
 

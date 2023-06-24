@@ -2,7 +2,7 @@
     ViewBag.Title = "MatchDetails";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
-@model Football_League_App.Models.Match
+@model Football_League_App.Models.MatchDetail
 
 <html>
 <head>
@@ -15,6 +15,7 @@
     <title>My Page</title>
 </head>
 <body>
+    <section class="main">
 	<div class="container">
 		<!-- code here -->
 		<div class="match">
@@ -31,15 +32,16 @@
 					<div class="team team--home">
 						<div class="team-logo">
 
-							<img src="~/images/@Model.MaDoiNhaNavigation.ImgPath" />
+							<img src="~/images/@Model.MaTdNavigation.MaDoiNhaNavigation.ImgPath" />
 						</div>
-						<h2 class="team-name">@Model.MaDoiNhaNavigation.TenClb</h2>
+                            <h2 class="team-name">@Model.MaTdNavigation.MaDoiNhaNavigation.TenClb</h2>
 					</div>
 				</div>
 				<div class="column">
 					<div class="match-details">
 						<div class="match-date">
-							3 May at <strong>17:30</strong>
+                                <strong>@Model.MaTdNavigation.MatchDate.ToString("d MMM 'at' HH:mm")</strong>
+
 						</div>
 						<div class="match-score">
 							<span class="match-score-number match-score-number--leading">3</span>
@@ -50,8 +52,7 @@
 							72'
 						</div>
 						<div class="match-referee">
-							Referee: <strong>Mike dean</strong>
-							Stadium: <strong>@Model.MaDoiNhaNavigation.TenSvd</strong>
+                                Stadium: <strong>@Model.MaTdNavigation.MaDoiNhaNavigation.TenSvd</strong>
 
 						</div>
 						
@@ -62,14 +63,152 @@
 					<div class="team team--away">
 						<div class="team-logo">
 
-							<img src="~/images/@Model.MaDoiKhachNavigation.ImgPath" />
+                                <img src="~/images/@Model.MaTdNavigation.MaDoiKhachNavigation.ImgPath" />
 						</div>
-						<h2 class="team-name"> @Model.MaDoiKhachNavigation.TenClb</h2>
+                            <h2 class="team-name"> @Model.MaTdNavigation.MaDoiKhachNavigation.TenClb</h2>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
+
+    <div class="details-container">
+        <div class="skill-box">
+            <div class="title-bar">
+                <span class="title">@Model.SoCuSutDoiNha</span>
+                <span class="end-title">Shots on goal</span>
+                <span class="mid-title">@Model.SoCuSutDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per shots">
+                </span>
+            </div>
+        </div>
+
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.KiemSoatBongDoiNha</span>
+                <span class="end-title">Possession</span>
+                <span class="mid-title">@Model.KiemSoatBongDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per possession">
+                </span>
+            </div>
+        </div>
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.SoTheDoDoiNha</span>
+                <span class="end-title">Red cards</span>
+                <span class="mid-title">@Model.SoTheDoDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per red-cards">
+                </span>
+            </div>
+        </div>
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.SoTheVangDoiNha</span>
+                <span class="end-title">Yellow cards</span>
+                <span class="mid-title">@Model.SoTheVangDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per yellow-cards">
+                </span>
+            </div>
+        </div>
+
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.SoPhatGocDoiNha</span>
+                <span class="end-title">Corner kicks</span>
+                <span class="mid-title">@Model.SoPhatGocDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per corner-kicks">
+                </span>
+            </div>
+        </div>
+
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.SoLanPhamLoiDoiNha</span>
+                <span class="end-title">Fouls</span>
+                <span class="mid-title">@Model.SoLanPhamLoiDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per fouls">
+                </span>
+            </div>
+        </div>
+
+        <div class="skill-box">
+            <div class="title-bar">
+
+                <span class="title">@Model.SoDuongChuyenDoiNha</span>
+                <span class="end-title">Passes</span>
+                <span class="mid-title">@Model.SoDuongChuyenDoiKhach</span>
+
+            </div>
+            <div class="skill-bar">
+                <span class="skill-per passes">
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+                // Get all the skill-per elements
+        const skillBars = document.querySelectorAll('.skill-per');
+
+        // Iterate through each skill-bar element
+        skillBars.forEach(skillBar => {
+          // Get the title and mid-title values
+          const title = parseInt(skillBar.parentElement.parentElement.querySelector('.title').textContent);
+          const midTitle = parseInt(skillBar.parentElement.parentElement.querySelector('.mid-title').textContent);
+          if (title === 0 && midTitle === 0) {
+            // Set width to 0% if either value is 0
+            skillBar.style.width = '50%';
+          } else {
+            const widthPercentage = (title / (midTitle + title)) * 100;
+            skillBar.style.width = widthPercentage + '%';
+          }
+
+          if (skillBar.classList.contains('possession')) {
+                skillBar.parentElement.parentElement.querySelector('.title').innerHTML += "%";
+                skillBar.parentElement.parentElement.querySelector('.mid-title').innerHTML += "%";
+
+            }
+
+        });
+    </script>
+
+    <script>
+            // Get the "View match details" button
+            const viewDetailsButton = document.querySelector('.match-bet-place');
+
+            // Get the "details-container" div
+            const detailsContainer = document.querySelector('.details-container');
+
+            // Add event listener to the button
+            viewDetailsButton.addEventListener('click', function () {
+                // Toggle the visibility of the "details-container" div
+                detailsContainer.style.display = detailsContainer.style.display === 'none' ? 'block' : 'none';
+            });
+    </script>
+    </section>
 </body>
 </html>
