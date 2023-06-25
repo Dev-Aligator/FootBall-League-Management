@@ -223,12 +223,12 @@ public partial class FlmdbContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ID");
             entity.Property(e => e.LoaiCt).HasColumnName("LoaiCT");
-            entity.Property(e => e.Luong).HasColumnType("money");
+            entity.Property(e => e.Luong).HasColumnType("int");
             entity.Property(e => e.MaClb)
                 .HasMaxLength(7)
                 .IsUnicode(false)
                 .HasColumnName("MaCLB");
-            entity.Property(e => e.NgaySinh).HasColumnType("smalldatetime");
+            entity.Property(e => e.NgaySinh).HasColumnType("date");
             entity.Property(e => e.TenCt)
                 .HasMaxLength(30)
                 .HasColumnName("TenCT");

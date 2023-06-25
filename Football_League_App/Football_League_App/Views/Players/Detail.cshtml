@@ -1,0 +1,185 @@
+﻿@model Football_League_App.Models.Player
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<main>
+    <section class="container">
+        <header>Details of Player</header>
+        <form asp-action="Delete" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">CLB</label>
+                <div>
+                    <select asp-for="MaClb" id="clubSelect" class="form-control" asp-items="ViewBag.MaClb"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TenCt" class="control-label"></label>
+                <div>
+                    <select asp-for="TenCt" id="playerSelect" class="form-control" asp-items="ViewBag.TenCt"></select>
+                </div>
+            </div>
+
+            <div id="playerDetails">
+                <div class="input-box">
+                    <label>Loại Cầu Thủ</label>
+                    <input disabled asp-for="LoaiCt" name="LoaiCt" placeholder="Loại cầu thủ" />
+                    <span asp-validation-for="LoaiCt" class="text-danger"></span>
+                </div>
+
+                <div class="column">
+                    <div class="input-box">
+                        <label>Quốc Tịch</label>
+                        <input disabled asp-for="QuocTich" name="QuocTich" placeholder="Quốc tịch" />
+                        <span asp-validation-for="QuocTich" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label>Ngày Sinh</label>
+                        <input disabled asp-for="NgaySinh" name="NgaySinh" placeholder="Ngày sinh" />
+                        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="input-box">
+                        <label>Chiều Cao</label>
+                        <input disabled asp-for="ChieuCao" name="ChieuCao" placeholder="Chiều cao" />
+                        <span asp-validation-for="ChieuCao" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label>Cân Nặng</label>
+                        <input disabled asp-for="CanNang" name="CanNang" placeholder="Cân nặng" />
+                        <span asp-validation-for="CanNang" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="input-box">
+                        <label>Vị Trí Chính</label>
+                        <input disabled asp-for="ViTriChinh" name="ViTriChinh" placeholder="Vị trí chính" />
+                        <span asp-validation-for="ViTriChinh" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label>Vị Trí Phụ</label>
+                        <input disabled asp-for="ViTriPhu" name="ViTriPhu" placeholder="Vị trí phụ" />
+                        <span asp-validation-for="ViTriPhu" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="input-box address">
+                    <label>Thông tin bổ sung</label>
+                    <input disabled asp-for="SoAo" name="SoAo" placeholder="Số Áo" />
+                    <span asp-validation-for="SoAo" class="text-danger"></span>
+
+                    <input disabled asp-for="ChanThuan" name="ChanThuan" placeholder="Chân Thuận" />
+                    <span asp-validation-for="ChanThuan" class="text-danger"></span>
+
+                    <input disabled asp-for="Luong" name="Luong" placeholder="Lương" />
+                    <span asp-validation-for="Luong" class="text-danger"></span>
+
+                    <input disabled asp-for="MaClb" name="MaClb" placeholder="Mã CLB" />
+                    <span asp-validation-for="MaClb" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit">Xóa Cầu Thủ</button>
+            <button type="submit">Sửa Thông Tin Cầu Thủ</button>
+
+            <div style="text-align: center; margin-top: 5px;">
+                <a asp-action="Players" asp-controller="Tournaments">Back to List</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#clubSelect").change(function () {
+                var selectedClub = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetPlayers")',
+                    type: 'GET',
+                    data: { maClb: selectedClub },
+                    success: function (result) {
+                        var options = '';
+                        $.each(result, function () {
+                            options += '<option value="' + this.value + '">' + this.text + '</option>';
+                        });
+                        $("#playerSelect").html(options);
+                    }
+                });
+            });
+        });
+        $(function () {
+            $("#clubSelect").change(function () {
+                var selectedClub = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetPlayers")',
+                    type: 'GET',
+                    data: { maClb: selectedClub },
+                    success: function (result) {
+                        var options = '';
+                        $.each(result, function () {
+                            options += '<option value="' + this.value + '">' + this.text + '</option>';
+                        });
+                        $("#playerSelect").html(options);
+
+                        // Get the selected player and club values
+                        var selectedPlayer = $("#playerSelect").val();
+                        var selectedClub = $("#clubSelect").val();
+
+                        // Make another AJAX request to get the player details
+                        $.ajax({
+                            url: '@Url.Action("GetPlayerDetails")',
+                            type: 'GET',
+                            data: { maClb: selectedClub, tenCt: selectedPlayer },
+                            success: function (result) {
+                                // Update the values of the input boxes
+                                $("#playerDetails input").each(function () {
+                                    var propName = $(this).attr("name");
+                                    $(this).val(result[propName]);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            $("#playerSelect").change(function () {
+                // Get the selected player and club values
+                var selectedPlayer = $(this).val();
+                var selectedClub = $("#clubSelect").val();
+
+                // Make another AJAX request to get the player details
+                $.ajax({
+                    url: '@Url.Action("GetPlayerDetails")',
+                    type: 'GET',
+                    data: { maClb: selectedClub, tenCt: selectedPlayer },
+                    success: function (result) {
+                        // Update the values of the input boxes
+                        $("#playerDetails input").each(function () {
+                            var propName = $(this).attr("name");
+                            $(this).val(result[propName]);
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+  
+}
+
