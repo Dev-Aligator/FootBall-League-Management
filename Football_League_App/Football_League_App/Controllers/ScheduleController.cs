@@ -34,7 +34,7 @@ namespace Football_League_App.Controllers
             {
                 con.Open();
 
-                string deleteQuery = "DELETE FROM Matchs WHERE LeagueId = @leagueId";
+                string deleteQuery = "DELETE FROM MatchDetails WHERE MaTD IN (SELECT MaTD FROM Matchs WHERE LeagueId = @leagueId);" + "DELETE FROM Matchs WHERE LeagueId = @leagueId";
                 SqlCommand deleteCommand = new SqlCommand(deleteQuery, con);
                 deleteCommand.Parameters.AddWithValue("@leagueId", leagueId);
                 deleteCommand.ExecuteNonQuery();
@@ -50,7 +50,11 @@ namespace Football_League_App.Controllers
                 foreach (Match match in matches)
                 {
                     string query = "INSERT INTO Matchs (MaDoiNha, MaDoiKhach, SoBanThangDoiNha, SoBanThangDoiKhach, MatchDate, LeagueId) " +
-                                   "VALUES (@MaDoiNha, @MaDoiKhach, @SoBanThangDoiNha, @SoBanThangDoiKhach, @MatchDate, @leagueId)";
+                                   "VALUES (@MaDoiNha, @MaDoiKhach, @SoBanThangDoiNha, @SoBanThangDoiKhach, @MatchDate, @leagueId);" +
+								   "SELECT SCOPE_IDENTITY();";
+                                   
+
+                                                    
 
                     SqlCommand sqlCommand = new SqlCommand(query, con);
                     sqlCommand.Parameters.AddWithValue("@MaDoiNha", match.MaDoiNhaNavigation.MaClb);
@@ -61,10 +65,17 @@ namespace Football_League_App.Controllers
                     sqlCommand.Parameters.AddWithValue("@leagueId", leagueId);
 
 
-                    sqlCommand.ExecuteNonQuery();
-                }
+					int matchId = Convert.ToInt32(sqlCommand.ExecuteScalar());
+					string maTD = "Match" + matchId.ToString("D3");
+					string matchDetailquery = "INSERT INTO MatchDetails (MaTd) values (@matchId) ";
+					SqlCommand matchDetailCommand = new SqlCommand(matchDetailquery, con);
+					matchDetailCommand.Parameters.AddWithValue("@matchId", maTD);
 
-                con.Close();
+					matchDetailCommand.ExecuteNonQuery();
+
+				}
+
+				con.Close();
             }
 
             return RedirectToAction("LeagueSchedule", new { leagueId = leagueId });
@@ -90,22 +101,23 @@ namespace Football_League_App.Controllers
                     matchDetail = new MatchDetail
                     {
                         MaTd = reader["MaTD"].ToString(),
-                        KiemSoatBongDoiNha = (int)reader["KiemSoatBongDoiNha"],
-                        KiemSoatBongDoiKhach = (int)reader["KiemSoatBongDoiKhach"],
-                        SoCuSutDoiNha = (int)reader["SoCuSutDoiNha"],
-                        SoCuSutDoiKhach = (int)reader["SoCuSutDoiKhach"],
-                        SoDuongChuyenDoiNha = (int)reader["SoDuongChuyenDoiNha"],
-                        SoDuongChuyenDoiKhach = (int)reader["SoDuongChuyenDoiKhach"],
-                        SoLanPhamLoiDoiNha = (int)reader["SoLanPhamLoiDoiNha"],
-                        SoLanPhamLoiDoiKhach = (int)reader["SoLanPhamLoiDoiKhach"],
-                        SoTheVangDoiNha = (int)reader["SoTheVangDoiNha"],
-                        SoTheVangDoiKhach = (int)reader["SoTheVangDoiKhach"],
-                        SoTheDoDoiNha = (int)reader["SoTheDoDoiNha"],
-                        SoTheDoDoiKhach = (int)reader["SoTheDoDoiKhach"],
-                        SoPhatGocDoiNha = (int)reader["SoPhatGocDoiNha"],
-                        SoPhatGocDoiKhach = (int)reader["SoPhatGocDoiKhach"],
-                        
-                    };
+						KiemSoatBongDoiNha = reader["KiemSoatBongDoiNha"] != DBNull.Value ? (int)reader["KiemSoatBongDoiNha"] : 50,
+						KiemSoatBongDoiKhach = reader["KiemSoatBongDoiKhach"] != DBNull.Value ? (int)reader["KiemSoatBongDoiKhach"] : 50,
+						SoCuSutDoiNha = reader["SoCuSutDoiNha"] != DBNull.Value ? (int)reader["SoCuSutDoiNha"] : 0,
+						SoCuSutDoiKhach = reader["SoCuSutDoiKhach"] != DBNull.Value ? (int)reader["SoCuSutDoiKhach"] : 0,
+						SoDuongChuyenDoiNha = reader["SoDuongChuyenDoiNha"] != DBNull.Value ? (int)reader["SoDuongChuyenDoiNha"] : 0,
+						SoDuongChuyenDoiKhach = reader["SoDuongChuyenDoiKhach"] != DBNull.Value ? (int)reader["SoDuongChuyenDoiKhach"] : 0,
+						SoLanPhamLoiDoiNha = reader["SoLanPhamLoiDoiNha"] != DBNull.Value ? (int)reader["SoLanPhamLoiDoiNha"] : 0,
+						SoLanPhamLoiDoiKhach = reader["SoLanPhamLoiDoiKhach"] != DBNull.Value ? (int)reader["SoLanPhamLoiDoiKhach"] : 0,
+						SoTheVangDoiNha = reader["SoTheVangDoiNha"] != DBNull.Value ? (int)reader["SoTheVangDoiNha"] : 0,
+						SoTheVangDoiKhach = reader["SoTheVangDoiKhach"] != DBNull.Value ? (int)reader["SoTheVangDoiKhach"] : 0,
+						SoTheDoDoiNha = reader["SoTheDoDoiNha"] != DBNull.Value ? (int)reader["SoTheDoDoiNha"] : 0,
+						SoTheDoDoiKhach = reader["SoTheDoDoiKhach"] != DBNull.Value ? (int)reader["SoTheDoDoiKhach"] : 0,
+						SoPhatGocDoiNha = reader["SoPhatGocDoiNha"] != DBNull.Value ? (int)reader["SoPhatGocDoiNha"] : 0,
+						SoPhatGocDoiKhach = reader["SoPhatGocDoiKhach"] != DBNull.Value ? (int)reader["SoPhatGocDoiKhach"] : 0,
+
+
+					};
 
                     matchDetail.MaTdNavigation = GetMatchById(matchId);
                     string leagueId = reader["leagueId"].ToString();
@@ -141,22 +153,22 @@ namespace Football_League_App.Controllers
                     matchDetail = new MatchDetail
                     {
                         MaTd = reader["MaTD"].ToString(),
-                        KiemSoatBongDoiNha = (int)reader["KiemSoatBongDoiNha"],
-                        KiemSoatBongDoiKhach = (int)reader["KiemSoatBongDoiKhach"],
-                        SoCuSutDoiNha = (int)reader["SoCuSutDoiNha"],
-                        SoCuSutDoiKhach = (int)reader["SoCuSutDoiKhach"],
-                        SoDuongChuyenDoiNha = (int)reader["SoDuongChuyenDoiNha"],
-                        SoDuongChuyenDoiKhach = (int)reader["SoDuongChuyenDoiKhach"],
-                        SoLanPhamLoiDoiNha = (int)reader["SoLanPhamLoiDoiNha"],
-                        SoLanPhamLoiDoiKhach = (int)reader["SoLanPhamLoiDoiKhach"],
-                        SoTheVangDoiNha = (int)reader["SoTheVangDoiNha"],
-                        SoTheVangDoiKhach = (int)reader["SoTheVangDoiKhach"],
-                        SoTheDoDoiNha = (int)reader["SoTheDoDoiNha"],
-                        SoTheDoDoiKhach = (int)reader["SoTheDoDoiKhach"],
-                        SoPhatGocDoiNha = (int)reader["SoPhatGocDoiNha"],
-                        SoPhatGocDoiKhach = (int)reader["SoPhatGocDoiKhach"],
+						KiemSoatBongDoiNha = reader["KiemSoatBongDoiNha"] != DBNull.Value ? (int)reader["KiemSoatBongDoiNha"] : 50,
+						KiemSoatBongDoiKhach = reader["KiemSoatBongDoiKhach"] != DBNull.Value ? (int)reader["KiemSoatBongDoiKhach"] : 50,
+						SoCuSutDoiNha = reader["SoCuSutDoiNha"] != DBNull.Value ? (int)reader["SoCuSutDoiNha"] : 0,
+						SoCuSutDoiKhach = reader["SoCuSutDoiKhach"] != DBNull.Value ? (int)reader["SoCuSutDoiKhach"] : 0,
+						SoDuongChuyenDoiNha = reader["SoDuongChuyenDoiNha"] != DBNull.Value ? (int)reader["SoDuongChuyenDoiNha"] : 0,
+						SoDuongChuyenDoiKhach = reader["SoDuongChuyenDoiKhach"] != DBNull.Value ? (int)reader["SoDuongChuyenDoiKhach"] : 0,
+						SoLanPhamLoiDoiNha = reader["SoLanPhamLoiDoiNha"] != DBNull.Value ? (int)reader["SoLanPhamLoiDoiNha"] : 0,
+						SoLanPhamLoiDoiKhach = reader["SoLanPhamLoiDoiKhach"] != DBNull.Value ? (int)reader["SoLanPhamLoiDoiKhach"] : 0,
+						SoTheVangDoiNha = reader["SoTheVangDoiNha"] != DBNull.Value ? (int)reader["SoTheVangDoiNha"] : 0,
+						SoTheVangDoiKhach = reader["SoTheVangDoiKhach"] != DBNull.Value ? (int)reader["SoTheVangDoiKhach"] : 0,
+						SoTheDoDoiNha = reader["SoTheDoDoiNha"] != DBNull.Value ? (int)reader["SoTheDoDoiNha"] : 0,
+						SoTheDoDoiKhach = reader["SoTheDoDoiKhach"] != DBNull.Value ? (int)reader["SoTheDoDoiKhach"] : 0,
+						SoPhatGocDoiNha = reader["SoPhatGocDoiNha"] != DBNull.Value ? (int)reader["SoPhatGocDoiNha"] : 0,
+						SoPhatGocDoiKhach = reader["SoPhatGocDoiKhach"] != DBNull.Value ? (int)reader["SoPhatGocDoiKhach"] : 0,
 
-                    };
+					};
 
                     matchDetail.MaTdNavigation = GetMatchById(matchId);
 
