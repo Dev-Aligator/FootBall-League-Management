@@ -44,9 +44,9 @@
 
 						</div>
 						<div class="match-score">
-							<span class="match-score-number match-score-number--leading">3</span>
+							<span class="match-score-number match-score-number--leading">@Model.MaTdNavigation.SoBanThangDoiNha</span>
 							<span class="match-score-divider">:</span>
-							<span class="match-score-number">1</span>
+							<span class="match-score-number">@Model.MaTdNavigation.SoBanThangDoiKhach</span>
 						</div>
 						<div class="match-time-lapsed">
 							72'
@@ -168,6 +168,9 @@
                 </span>
             </div>
         </div>
+
+            <button class="match-bet-place edit-match-details" onclick="redirectToUpdateMatchDetails('@Model.MaTd')">Update match details</button>
+
     </div>
 
     <script>
@@ -209,6 +212,13 @@
                 detailsContainer.style.display = detailsContainer.style.display === 'none' ? 'block' : 'none';
             });
     </script>
+
+        <script>
+            function redirectToUpdateMatchDetails(matchId) {
+                // Perform the desired action here
+                window.location.href = "/Schedule/UpdateMatchDetails?matchId=" + matchId;
+            }
+        </script>
     </section>
 </body>
 </html>

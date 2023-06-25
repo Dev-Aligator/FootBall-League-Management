@@ -122,6 +122,102 @@ namespace Football_League_App.Controllers
 			return View(matchDetail);
 		}
 
+        public IActionResult UpdateMatchDetails(string matchId)
+        {
+            MatchDetail matchDetail = null;
+            string leagueName = null;
+
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                string query = "SELECT * FROM MatchDetails WHERE MaTD =  @MatchId";
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                sqlCommand.Parameters.AddWithValue("@MatchId", matchId);
+                con.Open();
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    matchDetail = new MatchDetail
+                    {
+                        MaTd = reader["MaTD"].ToString(),
+                        KiemSoatBongDoiNha = (int)reader["KiemSoatBongDoiNha"],
+                        KiemSoatBongDoiKhach = (int)reader["KiemSoatBongDoiKhach"],
+                        SoCuSutDoiNha = (int)reader["SoCuSutDoiNha"],
+                        SoCuSutDoiKhach = (int)reader["SoCuSutDoiKhach"],
+                        SoDuongChuyenDoiNha = (int)reader["SoDuongChuyenDoiNha"],
+                        SoDuongChuyenDoiKhach = (int)reader["SoDuongChuyenDoiKhach"],
+                        SoLanPhamLoiDoiNha = (int)reader["SoLanPhamLoiDoiNha"],
+                        SoLanPhamLoiDoiKhach = (int)reader["SoLanPhamLoiDoiKhach"],
+                        SoTheVangDoiNha = (int)reader["SoTheVangDoiNha"],
+                        SoTheVangDoiKhach = (int)reader["SoTheVangDoiKhach"],
+                        SoTheDoDoiNha = (int)reader["SoTheDoDoiNha"],
+                        SoTheDoDoiKhach = (int)reader["SoTheDoDoiKhach"],
+                        SoPhatGocDoiNha = (int)reader["SoPhatGocDoiNha"],
+                        SoPhatGocDoiKhach = (int)reader["SoPhatGocDoiKhach"],
+
+                    };
+
+                    matchDetail.MaTdNavigation = GetMatchById(matchId);
+
+                }
+
+
+                con.Close();
+            }
+
+            return View(matchDetail);
+
+        }
+
+        [HttpPost]
+        public IActionResult UpdateMatchDetails(MatchDetail matchDetail)
+        {
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                string query = "UPDATE MatchDetails " +
+                                "SET KiemSoatBongDoiNha = @KSBDN, KiemSoatBongDoiKhach = @KSBDK, SoCuSutDoiNha = @SCSDN, SoCuSutDoiKhach = @SCSDK, SoDuongChuyenDoiNha = @SDCDN, " +
+                                "SoDuongChuyenDoiKhach = @SDCDK, SoLanPhamLoiDoiNha = @SLPLDN, SoLanPhamLoiDoiKhach = @SLPLDK, SoTheVangDoiNha = @STVDN, " + 
+                                "SoTheVangDoiKhach = @STVDK, SoTheDoDoiNha = @STDDN, SoTheDoDoiKhach = @STDDK, SoPhatGocDoiNha = @SPGDN, SoPhatGocDoiKhach = @SPGDK " +
+                                "WHERE MaTD = @MatchId;" +
+                                "UPDATE Matchs " + 
+                                "SET SoBanThangDoiNha = @SBTDN, SoBanThangDoiKhach = @SBTDK, MatchDate = @MD WHERE MaTD = @MatchId";
+
+
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                sqlCommand.Parameters.AddWithValue("@MatchId", matchDetail.MaTd);
+                sqlCommand.Parameters.AddWithValue("@KSBDN", matchDetail.KiemSoatBongDoiNha);
+                sqlCommand.Parameters.AddWithValue("@KSBDK", matchDetail.KiemSoatBongDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@SCSDN", matchDetail.SoCuSutDoiNha);
+                sqlCommand.Parameters.AddWithValue("@SCSDK", matchDetail.SoCuSutDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@SDCDN", matchDetail.SoDuongChuyenDoiNha);
+                sqlCommand.Parameters.AddWithValue("@SDCDK", matchDetail.SoDuongChuyenDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@SLPLDN", matchDetail.SoLanPhamLoiDoiNha);
+                sqlCommand.Parameters.AddWithValue("@SLPLDK", matchDetail.SoLanPhamLoiDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@STVDN", matchDetail.SoTheVangDoiNha);
+                sqlCommand.Parameters.AddWithValue("@STVDK", matchDetail.SoTheVangDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@STDDN", matchDetail.SoTheDoDoiNha);
+                sqlCommand.Parameters.AddWithValue("@STDDK", matchDetail.SoTheDoDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@SPGDN", matchDetail.SoPhatGocDoiNha);
+                sqlCommand.Parameters.AddWithValue("@SPGDK", matchDetail.SoPhatGocDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@SBTDN", matchDetail.MaTdNavigation.SoBanThangDoiNha);
+                sqlCommand.Parameters.AddWithValue("@SBTDK", matchDetail.MaTdNavigation.SoBanThangDoiKhach);
+                sqlCommand.Parameters.AddWithValue("@MD", matchDetail.MaTdNavigation.MatchDate);
+
+                con.Open();
+                sqlCommand.ExecuteNonQuery();
+
+
+
+                con.Close();
+
+            }
+
+
+            return RedirectToAction("MatchDetails", new {matchId = matchDetail.MaTd });
+
+        }
+
         public Match GetMatchById(string matchId)
         {
             Match match = null;

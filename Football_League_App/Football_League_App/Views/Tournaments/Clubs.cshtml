@@ -1,66 +1,123 @@
 ﻿@{
 	Layout = "_LayoutDashboard";
+	var counter = 1;
+
 }
 @model IEnumerable<Club>
 
 <html>
 
 	<head>
-
+		<link rel="stylesheet" href="~/css/FLM-2023.PlayerTable.css" />
+		<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
 	</head>
 
 	<body>
 
-	<button href="javascript:openClubForm()>
-		Add Club
-	</button>
 
-	<div class="form-popup" id="myForm">
-		<form class="form-container" method="post">
-			<h1>Register Club</h1>
-			<h2><strong>@TempData["Message"]</strong></h2>
-			<label>Club's Name</label>
-			<input type="text" placeholder="Enter Club's Name" name="clubName" required>
-			<label>Club's Address</label>
-			<input type="text" placeholder="Enter Club's Address" name="clubAddr" required>
-			<label>Club's Stadium</label>
-			<input type="text" placeholder="Enter Club's Stadium" name="clubStad" required>
-			<label>Club's Logo</label>
-			<input type="file" id="uploadImage" accept="image/*" name="imgFile">
 
-			<button type="submit" class="btn" asp-controller="Tournaments" asp-action="AddClub">Add</button>
-			<button type="button" class="btn cancel" onclick="closeClubForm()">Close</button>
-		</form>
+	
+
+	
+	<div class="table">
+		<section class="table__header">
+			<h1>CLub List</h1>
+			<div class="input-group">
+				<input type="search" placeholder="Search Data...">
+				<img src="~/images/search.png" alt="">
+			</div>
+			<div class="export__file">
+				<label for="export-file" class="export__file-btn" title="Export File"></label>
+				<input type="checkbox" id="export-file">
+				<div class="export__file-options">
+					<label>Export As &nbsp; &#10140;</label>
+					<label for="export-file" id="toPDF">PDF <img src="~/images/pdf.png" alt=""></label>
+					<label for="export-file" id="toJSON">JSON <img src="~/images/json.png" alt=""></label>
+					<label for="export-file" id="toCSV">CSV <img src="~/images/csv.png" alt=""></label>
+					<label for="export-file" id="toEXCEL">EXCEL <img src="~/images/excel.png" alt=""></label>
+				</div>
+			</div>
+		</section>
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th> Id <span class="icon-arrow">&UpArrow;</span></th>
+						<th> Club Name <span class="icon-arrow">&UpArrow;</span></th>
+						<th> Address <span class="icon-arrow">&UpArrow;</span></th>
+						<th> Stadium <span class="icon-arrow">&UpArrow;</span></th>
+					</tr>
+				</thead>
+				<tbody>
+
+						@foreach (var item in ViewBag.model)
+						{
+						<tr>
+							<th scope="row">@counter</th>
+							<td><img src="~/images/@item.ImgPath" alt="">@item.TenClb</td>
+							<td>@item.DiaChi</td>
+							<td>@item.TenSvd</td>
+						</tr>
+
+							counter++;
+
+						}
+				</tbody>
+			</table>
+
+		</section>
+
+	</div>
+	<div class="btn-container">
+		<button class="match-bet-place">Add a new club</button>
 	</div>
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th><img/>Logo</th>
-					<th scope="col">ID</th>
-				    <th scope="col">Name</th>
-				    <th scope="col">Address</th>
-				    <th scope="col">Stadium</th>
-				</tr>
-			</thead>
-			<tbody>
-			@foreach (var item in ViewBag.model)
-			{
-				<tr>
-					<td><img img src="~/images/@item.ImgPath" width="50" height="50" /></td>
-					<th scope="row">@item.Id</th>
-					<td>@item.TenClb</td>
-					<td>@item.DiaChi</td>
-					<td>@item.TenSvd</td>
-					<td>@item.MaCt</td>
-				</tr>
-			}
+	
+	<div class="fake-body" style="display: none;">
+	<section class="container">
+		<header>Register Club</header>
+			<form asp-action="AddClub" method="post" class="form">
+				<div class="input-box">
+					<label>Club Name</label>
+					<input type="text" placeholder="Enter Club's Name" name="clubName" required>			
+				</div>
+				<div class="input-box">
+					<label>Club Address</label>
+					<input type="text" placeholder="Enter Club's Address" name="clubAddr" required>
+				</div>
 
-		</tbody>
 
-		</table>
 
-	<script src="~/js/RegisterTournament.js"></script>
+			<div class="input-box">
+				<label>Club Stadium</label>
+				<input type="text" placeholder="Enter Club's Stadium" name="clubStad" required>
+			</div>
+			<div class="input-box">
+				<label>Club Logo</label>
+				<input type="file" id="uploadImage" accept="image/*" name="imgFile">
+			</div>
+
+			<h2 style="color: orangered"><strong>@TempData["Message"]</strong></h2>
+
+
+			<button type="submit">Add Club</button>
+
+		</form>
+	</section>
+	</div>
+
+	<script>
+		const viewDetailsButton = document.querySelector('.match-bet-place');
+
+		const detailsContainer = document.querySelector('.fake-body');
+
+		// Add event listener to the button
+		viewDetailsButton.addEventListener('click', function () {
+			// Toggle the visibility of the div
+			detailsContainer.style.display = detailsContainer.style.display === 'none' ? 'flex' : 'none';
+		});
+	</script>
+
 	</body>
 
 </html>

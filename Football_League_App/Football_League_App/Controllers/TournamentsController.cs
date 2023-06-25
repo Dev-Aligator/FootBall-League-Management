@@ -138,7 +138,7 @@ namespace Football_League_App.Controllers
 		void AddClubToDb(string clubName, string clubAddr, string clubStad, string imgFile)
 		{
 			SqlConnection con = new SqlConnection(connectString);
-			SqlCommand cmd = new("Insert Into Clubs values(@tenclub,@diachi,@tensvd,@imgpath)", con);
+			SqlCommand cmd = new("Insert Into Clubs  (TenCLB, TenSVD, DiaChi, Img_File) values(@tenclub,@diachi,@tensvd,@imgpath)", con);
 			con.Open();
 			try
 			{
