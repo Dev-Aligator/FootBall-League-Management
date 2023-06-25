@@ -239,6 +239,10 @@ section.main {
         transform: translateX(-50%) scale(1.1);
     }
 
+    .edit-match-details{
+        background-color: forestgreen !important;
+    }
+
 .container {
     width: 100%;
     display: flex;

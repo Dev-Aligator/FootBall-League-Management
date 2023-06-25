@@ -1,0 +1,213 @@
+﻿@model Football_League_App.Models.MatchDetail
+
+@{
+    ViewData["Title"] = "UpdateMatchDetails";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<main>
+    <section class="container">
+        <header>Update @Model.MaTd </header>
+        <form asp-action="UpdateMatchDetails" method="post" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="column">
+                <div class="input-box">
+                    <label>Home Club</label>
+                    <input asp-for="MaTdNavigation.MaDoiNhaNavigation.TenClb" placeholder="Home Club Name" disabled />
+                    <span asp-validation-for="MaTdNavigation.MaDoiNhaNavigation.TenClb" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label>Away Club</label>
+                    <input placeholder="Away Club Name" asp-for="MaTdNavigation.MaDoiNhaNavigation.TenClb" disabled />
+                    <span asp-validation-for="MaTdNavigation.MaDoiKhachNavigation.TenClb" class="text-danger"></span>
+                    <input  asp-for="MaTd" style="display:none;" />
+
+   
+
+
+                </div>
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Score</label>
+                    <input asp-for="MaTdNavigation.SoBanThangDoiNha" placeholder="Home Club Goals" type="number" min="0"/>
+                    <span asp-validation-for="MaTdNavigation.SoBanThangDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="MaTdNavigation.SoBanThangDoiKhach" placeholder="Away Club Goals" type="number" min="0" />
+                    <span asp-validation-for="MaTdNavigation.SoBanThangDoiKhach" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="column">
+
+            <div class="input-box">
+                <label>Possesion</label>
+                    <input asp-for="KiemSoatBongDoiNha" placeholder="Home Club Possesion" id="homePossession" type="number" min="0" max="100" />
+                <span asp-validation-for="KiemSoatBongDoiNha" class="text-danger"></span>
+            </div>
+            <div class="input-box">
+                 <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="KiemSoatBongDoiKhach" placeholder="Away Club Possesion" id="awayPossession" type="number" min="0" max="100" />
+                <span asp-validation-for="KiemSoatBongDoiKhach" class="text-danger"></span>
+            </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Shots on goal</label>
+                    <input asp-for="SoCuSutDoiNha" placeholder="Home Club Shots" />
+                    <span asp-validation-for="SoCuSutDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoCuSutDoiKhach" placeholder="Away Club Shots" />
+                    <span asp-validation-for="SoCuSutDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Passes</label>
+                    <input asp-for="SoDuongChuyenDoiNha" placeholder="Home Club Passes" />
+                    <span asp-validation-for="SoDuongChuyenDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoDuongChuyenDoiKhach" placeholder="Away Club Passes" />
+                    <span asp-validation-for="SoDuongChuyenDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Fouls</label>
+                    <input asp-for="SoLanPhamLoiDoiNha" placeholder="Home Club Fouls" />
+                    <span asp-validation-for="SoLanPhamLoiDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoLanPhamLoiDoiKhach" placeholder="Away Club Fouls" />
+                    <span asp-validation-for="SoLanPhamLoiDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Yellow cards</label>
+                    <input asp-for="SoTheVangDoiNha" placeholder="Home Club Yellow cards" />
+                    <span asp-validation-for="SoTheVangDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoTheVangDoiKhach" placeholder="Away Club Yellow cards" />
+                    <span asp-validation-for="SoTheVangDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Red cards</label>
+                    <input asp-for="SoTheDoDoiNha" placeholder="Home Club Red cards" />
+                    <span asp-validation-for="SoTheDoDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoTheDoDoiKhach" placeholder="Away Club Red cards" />
+                    <span asp-validation-for="SoTheDoDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box">
+                    <label>Corner kicks</label>
+                    <input asp-for="SoPhatGocDoiNha" placeholder="Home Club Corner kicks" />
+                    <span asp-validation-for="SoPhatGocDoiNha" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label style="visibility: hidden;">Visibility</label>
+
+                    <input asp-for="SoPhatGocDoiKhach" placeholder="Away Club Corner kicks" />
+                    <span asp-validation-for="SoPhatGocDoiKhach" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="input-box">
+                <label>Match Date</label>
+                <input asp-for="MaTdNavigation.MatchDate" placeholder="Match Date"/>
+                <span asp-validation-for="MaTdNavigation.MatchDate" class="text-danger"></span>
+            </div>
+
+
+
+            <button type="submit">Save Match Info</button>
+
+
+            <div style="text-align: center; margin-top: 5px;">
+                <a href="@Url.Action("MatchDetails",  new { matchId = Model.MaTd })">Back to Match Details</a>
+
+            </div>
+        </form>
+    </section>
+
+
+    <script>
+        function updatePossession() {
+            const homeInput = document.getElementById('homePossession');
+            const awayInput = document.getElementById('awayPossession');
+
+
+            const homePercentage = parseInt(homeInput.value);
+            const awayPercentage = parseInt(awayInput.value);
+
+
+            console.log(homePercentage, awayPercentage);
+            // Update the percentage of the other team
+            if (homeInput === document.activeElement) {
+                awayInput.value = 100 - homePercentage;
+            } else {
+                homeInput.value = 100 - awayPercentage;
+            }
+        }
+
+        const homeInput = document.getElementById('homePossession');
+        const awayInput = document.getElementById('awayPossession');
+
+        homeInput.addEventListener('input', updatePossession);
+        awayInput.addEventListener('input', updatePossession);
+
+    </script>
+
+</main>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
