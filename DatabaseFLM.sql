@@ -4,6 +4,7 @@ select *from Users
 select *from League
 select * from Players
 select * from Clubs
+select *from League
 
 Create Database FLMDB
 
@@ -22,6 +23,10 @@ Create Table Rules
 	constraint PK_MaRules primary key(MaRules)
 )
 
+alter table Rules add BasicInfor nvarchar(200)
+
+insert into Rules values('This is the 1st Rule')
+
 Create Table League
 (
    ID int identity(1,1),
@@ -34,6 +39,8 @@ Create Table League
    constraint PK_MaLeague primary key(MaLeague)
 )
 Alter table League add constraint FK_Rules foreign key(MaRule) references Rules(MaRules)
+
+insert into League values(N'Rule001','FistLeague',12,'26-6-2023','29-6-2023','User001',1)
 
 Create Table Users
 (
@@ -60,8 +67,8 @@ Create Table Clubs
 )
 alter table Clubs add Img_File nvarchar(150)
 
-insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford', 'Club003.png')
-insert into Clubs values('Real Madrid', 'Madrid', 'Santiago Bernabeu', 'Club004.png')
+insert into Clubs values('Manchester United', 'Manchester', 'Old Trafford', 'Club001.png')
+insert into Clubs values('Real Madrid', 'Madrid', 'Santiago Bernabeu', 'Club002.png')
 
 /*alter table Clubs drop FK_MaCT 1
 alter table Clubs drop column MaCT 2*/

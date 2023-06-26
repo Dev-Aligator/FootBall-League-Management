@@ -157,6 +157,9 @@ public partial class FlmdbContext : DbContext
         modelBuilder.Entity<Rules>(entity =>
         {
             entity.HasKey(e => e.MaRules).HasName("PK_MaRule");
+            entity.Property(e => e.BasicInfor)
+            .HasMaxLength(200)
+            .IsUnicode(false);
         });
 
         modelBuilder.Entity<Match>(entity =>

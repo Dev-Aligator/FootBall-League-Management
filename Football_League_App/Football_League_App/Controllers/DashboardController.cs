@@ -46,18 +46,21 @@ namespace Football_League_App.Controllers
 		{
 			SqlConnection con = new("Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
 
-			string query = "Set Dateformat dmy\n Insert into League (LeagueName, MaxTeams, StartDate, EndDate, UserId) values(@leagueName,@MaxTeams,@startDate,@endDate, @userId)";
+			string query = "Set Dateformat dmy\n Insert into League values(@ruleId, @leagueName,@MaxTeams,@startDate,@endDate, @userId, @isPublic)";
 
 			SqlCommand cmd = new(query, con);
 			con.Open();
 			try
 			{
-				cmd.Parameters.AddWithValue("leagueName", leagueName);
+                cmd.Parameters.AddWithValue("ruleId", "Rule001"); //baisc rule
+                cmd.Parameters.AddWithValue("leagueName", leagueName);
 				cmd.Parameters.AddWithValue("MaxTeams", txtMaxTeams);
 				DateTime dt = DateTime.Parse(txtStartDate);
 				cmd.Parameters.AddWithValue("startDate", dt);
 			    dt = DateTime.Parse(txtEndDate);
 				cmd.Parameters.AddWithValue("endDate", dt);
+				cmd.Parameters.AddWithValue("@userId", "User001");
+				cmd.Parameters.AddWithValue("@isPublic", 1);
 				cmd.ExecuteNonQuery();
 				return true;
 			}

@@ -2,9 +2,11 @@
 {
     public class Rules
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
 
         public string MaRules { get; set; } = null!;
+
+        public string? BasicInfor { get; set; }
 
     }
 }
