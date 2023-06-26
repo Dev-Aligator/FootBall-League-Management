@@ -103,7 +103,7 @@
                     <span asp-validation-for="MaClb" class="text-danger"></span>
                 </div>
             </div>
-            <button type="submit">Xóa Cầu Thủ</button>
+            <button asp-action="Delete" id="removeButton" type="submit">Xóa Cầu Thủ</button>
             <button id="editButton" type="button">Sửa thông tin cầu thủ</button>
             <button asp-action="Edit" id="saveButton" type="submit" style="display: none;">Lưu</button>
             <div style="text-align: center; margin-top: 5px;">
@@ -224,7 +224,30 @@
                 });
             });
         });
+        $(function () {
+            $("#removeButton").click(function () {
+                if (confirm("Bạn có chắc chắn muốn xóa cầu thủ này?")) {
+                    var selectedPlayer = $("#playerSelect").val();
+                    var selectedClub = $("#clubSelect").val();
 
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Players")',
+                        type: 'POST',
+                        data: { maClb: selectedClub, tenCt: selectedPlayer },
+                        success: function (result) {
+                            // Handle the success response
+                            console.log("Player deleted successfully.");
+                            // Redirect to the player list or perform any other desired action
+                            window.location.href = '@Url.Action("Players", "Tournaments")';
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response
+                            console.log("Error deleting player:", error);
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
     @{

@@ -238,48 +238,12 @@ namespace Football_League_App.Controllers
             ViewData["MaClb"] = clubList;
             return View(player);
         }
-        
+
         // POST: Players/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        
-        // GET: Players/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Players == null)
-            {
-                return NotFound();
-            }
 
-            var player = await _context.Players
-                .Include(p => p.MaClbNavigation)
-                .FirstOrDefaultAsync(m => m.MaCt == id);
-            if (player == null)
-            {
-                return NotFound();
-            }
 
-            return View(player);
-        }
-
-        // POST: Players/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.Players == null)
-            {
-                return Problem("Entity set 'FlmdbContext.Players'  is null.");
-            }
-            var player = await _context.Players.FindAsync(id);
-            if (player != null)
-            {
-                _context.Players.Remove(player);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool PlayerExists(string id)
         {
