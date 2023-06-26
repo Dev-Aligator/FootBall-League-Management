@@ -20,7 +20,7 @@ namespace Football_League_App.Controllers
         public IActionResult Editing(League league)
         {
 
-            string query = "UPDATE League SET LeagueName = @LeagueName, MaxTeams = @MaxTeams, StartDate = @StartDate, EndDate = @EndDate WHERE MaLeague = @MaLeague";
+            string query = "UPDATE League SET LeagueName = @LeagueName, MaxTeams = @MaxTeams, StartDate = @StartDate, EndDate = @EndDate, IsPublic = @IsPublic WHERE MaLeague = @MaLeague";
 
             using (SqlConnection con = new SqlConnection(connectString))
             {
@@ -32,6 +32,8 @@ namespace Football_League_App.Controllers
                 cmd.Parameters.AddWithValue("@StartDate", league.StartDate);
                 cmd.Parameters.AddWithValue("@EndDate", league.EndDate);
                 cmd.Parameters.AddWithValue("@MaLeague", league.MaLeague);
+                cmd.Parameters.AddWithValue("@IsPublic", league.IsPublic);
+
 
                 cmd.ExecuteNonQuery();
             }
@@ -207,9 +209,11 @@ namespace Football_League_App.Controllers
                         MaxTeams = (int)reader["MaxTeams"],
                         StartDate = DateTime.Parse(reader["StartDate"].ToString()),
                         EndDate = DateTime.Parse(reader["EndDate"].ToString()),
+						IsPublic = reader.GetBoolean(reader.GetOrdinal("IsPublic"))
 
-                    // Populate other properties of the League object as needed
-                };
+
+						// Populate other properties of the League object as needed
+					};
 
                     return league;
                 }
