@@ -150,7 +150,13 @@ public partial class FlmdbContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ID");
             entity.Property(e => e.LeagueName).HasMaxLength(15);
+            entity.Property(e => e.MaRule);
             entity.Property(e => e.StartDate).HasColumnType("smalldatetime");
+        });
+
+        modelBuilder.Entity<Rules>(entity =>
+        {
+            entity.HasKey(e => e.MaRules).HasName("PK_MaRule");
         });
 
         modelBuilder.Entity<Match>(entity =>

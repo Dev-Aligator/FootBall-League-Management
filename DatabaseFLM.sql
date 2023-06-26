@@ -12,16 +12,28 @@ use FLMDB
 set dateformat dmy
 
 /*1*/
+
+/*có thể có nhiều rules trong nhiều giải*/
+Create Table Rules
+(
+	ID int identity(1,1),
+	MaRules as 'Rule' + right('000' + cast (ID as varchar(3)), 3) persisted,
+	/*Bảng này để ng dùng tự Update Rules giải đấu của họ nên thuộc tính chỉ cần như này là đủ*/
+	constraint PK_MaRules primary key(MaRules)
+)
+
 Create Table League
 (
    ID int identity(1,1),
    MaLeague as 'League' + right('000' + cast (ID as varchar(3)), 3) persisted,
+   MaRule varchar(7) not null, /*ref MaRules*/
    LeagueName Nvarchar(15) unique not null,
    MaxTeams int not null,
    StartDate smalldatetime not null,
    EndDate smalldatetime not null,
    constraint PK_MaLeague primary key(MaLeague)
 )
+Alter table League add constraint FK_Rules foreign key(MaRule) references Rules(MaRules)
 
 Create Table Users
 (
@@ -205,10 +217,13 @@ ADD LeagueId VARCHAR(9) NULL;
 ALTER TABLE Matchs
 ADD CONSTRAINT FK_LeagueId FOREIGN KEY (LeagueId) REFERENCES League (MaLeague);
 
-alter table CLubs alter column MaCT varchar(9) null;
+alter table CLubs alter column MaCT varchar(9) null; /*error: ALTER TABLE ALTER COLUMN failed because column 'MaCT' does not exist in table 'Clubs'.*/
 
 ALTER TABLE Clubs
-ADD CONSTRAINT FK_Clubs_Users FOREIGN KEY (LeagueId) REFERENCES League (MaLeague);
+ADD CONSTRAINT FK_Clubs_Users FOREIGN KEY (LeagueId) REFERENCES League (MaLeague); /*error: Msg 1769, Level 16, State 1, Line 222
+Foreign key 'FK_Clubs_Users' references invalid column 'LeagueId' in referencing table 'Clubs'.
+Msg 1750, Level 16, State 0, Line 222
+Could not create constraint or index.*/
 
 
 ALTER TABLE Clubs
@@ -229,5 +244,5 @@ ADD CONSTRAINT FK_Leagues_Users FOREIGN KEY (UserId) REFERENCES Users (MaUsers);
 -- Allow longer username
 ALTER TABLE Users alter column UserName nvarchar(30) not null;
 
-ALTER TABLE Leagues
+ALTER TABLE League
 ADD IsPublic BIT NOT NULL DEFAULT 0;

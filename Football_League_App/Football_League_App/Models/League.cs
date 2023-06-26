@@ -9,6 +9,8 @@ public partial class League
 
     public string MaLeague { get; set; } = null!;
 
+    public string MaRule { get; set; } = null!;
+
     public string LeagueName { get; set; } = null!;
 
     public int MaxTeams { get; set; }

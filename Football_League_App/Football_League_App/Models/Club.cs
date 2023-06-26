@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Build.Framework;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Football_League_App.Models;
 
@@ -16,6 +18,9 @@ public partial class Club
     public string TenSvd { get; set; } = null!;
 
     public string MaCt { get; set; } = null!;
+
+    [Required]
+	 //public IFormFile ClubPhoto { get; set; } 
 
     public string? ImgPath { get; set; } 
 

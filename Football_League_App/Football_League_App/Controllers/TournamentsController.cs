@@ -1,4 +1,5 @@
 ﻿using Football_League_App.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -9,6 +10,12 @@ namespace Football_League_App.Controllers
 	{
 		List<Player> list = new List<Player>();
 		string connectString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True; MultipleActiveResultSets = True; Encrypt = False; TrustServerCertificate = True";
+		readonly IWebHostEnvironment _webHostEnvironment;
+
+		public TournamentsController(IWebHostEnvironment webHostEnvironment)
+		{
+			_webHostEnvironment = webHostEnvironment;
+		}
 
 		public IActionResult Index()
 		{
@@ -47,34 +54,6 @@ namespace Football_League_App.Controllers
 			return View();
 		}
 
-		public IActionResult AddPlayer()
-		{
-			//return RedirectToAction("Players", "Tournaments");
-			return View();
-		}
-
-		public IActionResult AddPlayerIntoDatabase() 
-		{
-			AddingPlayersToDb();
-
-			return RedirectToAction("Players", "Tournaments");
-		}
-
-		void AddingPlayersToDb()
-		{
-			try
-			{
-				SqlConnection con = new SqlConnection(connectString);
-				con.Open();
-				SqlCommand cmd = new("Set Dateformat dmy\nINSERT INTO Players ([@TenCT], [@LoaiCT], [@Luong], [@ChieuCao], [@CanNang], [@ViTriChinh], [@ViTriPhu], [@NgaySinh], [@SoAo], [@ChanThuan])", con);
-			    //cmd.Parameters.Add("@TenCT", System.Data.SqlDbType.VarChar).Value = txtTenCT.Text;
-			}
-			catch (Exception ex) 
-			{
-
-			}
-			//check it later, club first
-		}
 		public List<Player> GetPlayersList()
 		{
 			List<Player> list = new List<Player>();
@@ -129,29 +108,39 @@ namespace Football_League_App.Controllers
 				list.Add(club);
 			}
 			con.Close ();
-			//logo từng đội sẽ đc phân biệt = "MãCLB + định dạng file"
+			//logo từng đội sẽ đc phân biệt = "MãCLB hoặc TênCLB + định dạng file"
 			//vd club002 -> logo file: "club002.png"
 			return list;
 		}
 
-		public IActionResult AddClub(string clubName, string clubAddr, string clubStad, string imgFile)
+		public IActionResult AddClub(string clubName, string clubAddr, string clubStad, IFormFile clubPhoto)
 		{
-			AddClubToDb(clubName,clubAddr, clubStad, imgFile);
+			AddClubToDb(clubName,clubAddr, clubStad, clubPhoto);
 			return RedirectToAction("Clubs", "Tournaments");
 		}
 
-		void AddClubToDb(string clubName, string clubAddr, string clubStad, string imgFile)
+		void AddClubToDb(string clubName, string clubAddr, string clubStad, IFormFile clubPhoto)
 		{
 			SqlConnection con = new SqlConnection(connectString);
 			SqlCommand cmd = new("Insert Into Clubs  (TenCLB, TenSVD, DiaChi, Img_File) values(@tenclub,@diachi,@tensvd,@imgpath)", con);
 			con.Open();
+			FlmdbContext flmdb = new();
+			Club club = new();
 			try
 			{
 				cmd.Parameters.Add("@tenclub", System.Data.SqlDbType.NVarChar).Value = clubName;
 				cmd.Parameters.Add("@diachi", System.Data.SqlDbType.NVarChar).Value = clubAddr;
 				cmd.Parameters.Add("@tensvd", System.Data.SqlDbType.NVarChar).Value = clubStad;
-				//imgFile="" tạm để imgpath quay lại sau
-				cmd.Parameters.Add("@imgpath", System.Data.SqlDbType.NVarChar).Value = " ";
+
+				/*if (clubPhoto != null) 
+				{
+					string folder = "images/";
+					folder += clubName + club.ClubPhoto.FileName;
+					string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+					club.ClubPhoto.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+				}*/
+				//cmd.Parameters.Add("@imgpath", System.Data.SqlDbType.NVarChar).Value = club.ClubPhoto.ToString();
+				//Có vấn đề trong việc thêm ảnh
 				cmd.ExecuteNonQuery();
 				TempData["Message"] = "Add Club To Db Success!";
 			}
@@ -161,6 +150,21 @@ namespace Football_League_App.Controllers
 			}
 			con.Close();
 		}
+
+		/*public ActionResult AddingImage(IFormFile clubLogo)
+		{
+			FlmdbContext db=new();
+			if (clubLogo != null)
+			{
+				int id = int.Parse(db.Clubs.ToList().Last().MaClb.ToString());
+				string filename = "images/";
+				int index = clubLogo.FileName.IndexOf('.');
+				filename = "Club" + id.ToString() + "." + clubLogo.FileName.Substring(index + 1);
+				string path = Path.Combine(_webHostEnvironment.WebRootPath, filename);
+				clubLogo.CopyToAsync(new FileStream(path, FileMode.Create));
+			}
+			return RedirectToAction("Club", "Tournaments");
+		}*/
 
 		public List<League> GetLeaguesList(string userId, bool is_public)
 		{
@@ -183,21 +187,29 @@ namespace Football_League_App.Controllers
             }
 			SqlConnection con = new SqlConnection(connectString);
 			con.Open();
-			SqlCommand sqlCommand = new SqlCommand(query, con);
-			sqlCommand.Parameters.AddWithValue("@userId", userId);
-			SqlDataReader reader = sqlCommand.ExecuteReader();
-			while (reader.Read())
+
+			try
 			{
-				League league = new League()
+				SqlCommand sqlCommand = new SqlCommand(query, con);
+				sqlCommand.Parameters.AddWithValue("@userId", userId);
+				SqlDataReader reader = sqlCommand.ExecuteReader();
+				while (reader.Read())
 				{
-					Id = (int)reader["ID"],
-					MaLeague = reader["MaLeague"].ToString(),
-					LeagueName = reader["LeagueName"].ToString(),
-					MaxTeams = (int)reader["MaxTeams"],
-					StartDate = DateTime.Parse(reader["StartDate"].ToString()),
-					EndDate = DateTime.Parse(reader["EndDate"].ToString()),
-				};
-				list.Add(league);
+					League league = new League()
+					{
+						Id = (int)reader["ID"],
+						MaLeague = reader["MaLeague"].ToString(),
+						LeagueName = reader["LeagueName"].ToString(),
+						MaxTeams = (int)reader["MaxTeams"],
+						StartDate = DateTime.Parse(reader["StartDate"].ToString()),
+						EndDate = DateTime.Parse(reader["EndDate"].ToString()),
+					};
+					list.Add(league);
+				}
+			}
+			catch (Exception ex)
+			{
+				TempData["Message"] = "Error: " + ex.Message;
 			}
 			con.Close();
 			return list;
