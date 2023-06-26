@@ -16,19 +16,29 @@ namespace Football_League_App.Controllers
         {
 			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
 
-			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
+            string MaUser = GetMaUsersFromUserName(currentUsername);
+
+            List<League> list = GetLeaguesList(MaUser);
 
 
 			ViewBag.model = list;
-            ViewBag.user = GetMaUsersFromUserName(currentUsername);
+            
             return View();
         }
 
         public IActionResult LeagueSchedule(string leagueId)
         {
+            string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+            string MaUser = GetMaUsersFromUserName(currentUsername);
+
+
             List<Match> matches = GetMatchesInLeague(leagueId);
             ViewBag.LeagueId = leagueId;
             string leagueName = GetLeagueName(leagueId);
+
+            ViewBag.is_admin = GetLoaiUsersFromMaUsers(MaUser) == 0;
+            ViewBag.is_owner = MaUser == GetLeagueById(leagueId).UserId;
             ViewBag.LeagueName = leagueName;
             return View(matches);
         }
@@ -92,6 +102,7 @@ namespace Football_League_App.Controllers
         {
             MatchDetail matchDetail = null;
             string leagueName = null;
+            string leagueId = "";
 
             using (SqlConnection con = new SqlConnection(connectString))
             {
@@ -126,7 +137,7 @@ namespace Football_League_App.Controllers
 					};
 
                     matchDetail.MaTdNavigation = GetMatchById(matchId);
-                    string leagueId = reader["leagueId"].ToString();
+                    leagueId = reader["leagueId"].ToString();
 
                     leagueName = GetLeagueName(leagueId);
 
@@ -136,7 +147,15 @@ namespace Football_League_App.Controllers
 				con.Close();
 			}
 
-            ViewBag.leagueName = leagueName;
+            string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+            string MaUser = GetMaUsersFromUserName(currentUsername);
+
+
+            ViewBag.is_admin = GetLoaiUsersFromMaUsers(MaUser) == 0;
+            ViewBag.is_owner = MaUser == GetLeagueById(leagueId).UserId;
+            ViewBag.LeagueName = leagueName;
+
 			return View(matchDetail);
 		}
 
@@ -365,7 +384,7 @@ namespace Football_League_App.Controllers
 			}
             else
             {
-				query = "SELECT * FROM League where UserId = @userId";
+				query = "SELECT * FROM League where UserId = @userId OR IsPublic = 1";
 			}
             SqlConnection con = new SqlConnection(connectString);
             con.Open();
@@ -547,5 +566,38 @@ namespace Football_League_App.Controllers
 
 			return user?.LoaiUsers ?? 2;
 		}
-	}
+
+        public League GetLeagueById(string leagueId)
+        {
+            using (SqlConnection con = new SqlConnection(connectString))
+            {
+                string query = "SELECT * FROM League WHERE MaLeague = @LeagueId";
+
+                con.Open();
+                SqlCommand sqlCommand = new SqlCommand(query, con);
+                sqlCommand.Parameters.AddWithValue("@LeagueId", leagueId);
+
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    League league = new League
+                    {
+                        MaLeague = reader["MaLeague"].ToString(),
+                        LeagueName = reader["LeagueName"].ToString(),
+                        MaxTeams = (int)reader["MaxTeams"],
+                        StartDate = DateTime.Parse(reader["StartDate"].ToString()),
+                        EndDate = DateTime.Parse(reader["EndDate"].ToString()),
+                        IsPublic = reader.GetBoolean(reader.GetOrdinal("IsPublic"))
+
+
+                        // Populate other properties of the League object as needed
+                    };
+
+                    return league;
+                }
+            }
+
+            return null; // If league is not found
+        }
+    }
 }

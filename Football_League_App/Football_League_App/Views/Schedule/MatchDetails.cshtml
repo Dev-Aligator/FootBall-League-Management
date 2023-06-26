@@ -168,8 +168,10 @@
                 </span>
             </div>
         </div>
-
-            <button class="match-bet-place edit-match-details" onclick="redirectToUpdateMatchDetails('@Model.MaTd')">Update match details</button>
+            @if(ViewBag.is_admin || ViewBag.is_owner)
+            {
+                <button class="match-bet-place edit-match-details" onclick="redirectToUpdateMatchDetails('@Model.MaTd')">Update match details</button>
+            }
 
     </div>
 

@@ -26,7 +26,7 @@ namespace Football_League_App.Controllers
 		{
 			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
 
-			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
+			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername), true);
 			ViewBag.model = list;
 			return View();
 		}
@@ -35,7 +35,7 @@ namespace Football_League_App.Controllers
 		{
 			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
 
-			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
+			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername), false);
 			ViewBag.model = list;
 			return View();
 		}
@@ -162,7 +162,7 @@ namespace Football_League_App.Controllers
 			con.Close();
 		}
 
-		public List<League> GetLeaguesList(string userId)
+		public List<League> GetLeaguesList(string userId, bool is_public)
 		{
 			List<League> list = new();
 			string query = "";
@@ -171,10 +171,16 @@ namespace Football_League_App.Controllers
 				query = "SELECT * FROM League";
 
 			}
+			else if(is_public)
+			{
+			
+				query = "SELECT * FROM League where UserId = @userId OR IsPublic = 1";
+               
+			}
 			else
 			{
-				query = "SELECT * FROM League where UserId = @userId";
-			}
+                query = "SELECT * FROM League where UserId = @userId";
+            }
 			SqlConnection con = new SqlConnection(connectString);
 			con.Open();
 			SqlCommand sqlCommand = new SqlCommand(query, con);

@@ -43,6 +43,12 @@
                 </div>
             </div>
 
+            <div class="input-box">
+                    <label>Is Public</label>
+                    <input asp-for="IsPublic" placeholder="Is your league PUBLIC to people" />
+                    <span asp-validation-for="IsPublic" class="text-danger"></span>
+            </div>
+
             <button type="submit">Save League</button>
 
 
