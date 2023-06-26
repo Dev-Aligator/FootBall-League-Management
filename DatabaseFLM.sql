@@ -205,3 +205,29 @@ ADD LeagueId VARCHAR(9) NULL;
 ALTER TABLE Matchs
 ADD CONSTRAINT FK_LeagueId FOREIGN KEY (LeagueId) REFERENCES League (MaLeague);
 
+alter table CLubs alter column MaCT varchar(9) null;
+
+ALTER TABLE Clubs
+ADD CONSTRAINT FK_Clubs_Users FOREIGN KEY (LeagueId) REFERENCES League (MaLeague);
+
+
+ALTER TABLE Clubs
+ADD UserId VARCHAR(7);
+
+-- Add foreign key constraint
+ALTER TABLE Clubs
+ADD CONSTRAINT FK_Clubs_Users FOREIGN KEY (UserId) REFERENCES Users (MaUsers);
+
+-- Add UserId column to Leagues table
+ALTER TABLE League
+ADD UserId VARCHAR(7);
+
+-- Add foreign key constraint
+ALTER TABLE League
+ADD CONSTRAINT FK_Leagues_Users FOREIGN KEY (UserId) REFERENCES Users (MaUsers);
+
+-- Allow longer username
+ALTER TABLE Users alter column UserName nvarchar(30) not null;
+
+ALTER TABLE Leagues
+ADD IsPublic BIT NOT NULL DEFAULT 0;
