@@ -136,14 +136,16 @@ namespace Football_League_App.Controllers
 
 		public IActionResult AddClub(string clubName, string clubAddr, string clubStad, string imgFile)
 		{
-			AddClubToDb(clubName,clubAddr, clubStad, imgFile);
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+			AddClubToDb(clubName,clubAddr, clubStad, imgFile, GetMaUsersFromUserName(currentUsername));
 			return RedirectToAction("Clubs", "Tournaments");
 		}
 
-		void AddClubToDb(string clubName, string clubAddr, string clubStad, string imgFile)
+		void AddClubToDb(string clubName, string clubAddr, string clubStad, string imgFile, string userId)
 		{
 			SqlConnection con = new SqlConnection(connectString);
-			SqlCommand cmd = new("Insert Into Clubs  (TenCLB, TenSVD, DiaChi, Img_File) values(@tenclub,@diachi,@tensvd,@imgpath)", con);
+			SqlCommand cmd = new("Insert Into Clubs  (TenCLB, TenSVD, DiaChi, Img_File, UserId) values(@tenclub,@diachi,@tensvd,@imgpath, @userId)", con);
 			con.Open();
 			try
 			{
@@ -152,6 +154,8 @@ namespace Football_League_App.Controllers
 				cmd.Parameters.Add("@tensvd", System.Data.SqlDbType.NVarChar).Value = clubStad;
 				//imgFile="" tạm để imgpath quay lại sau
 				cmd.Parameters.Add("@imgpath", System.Data.SqlDbType.NVarChar).Value = " ";
+				cmd.Parameters.Add("@userId", System.Data.SqlDbType.NVarChar).Value = userId;
+
 				cmd.ExecuteNonQuery();
 				TempData["Message"] = "Add Club To Db Success!";
 			}
