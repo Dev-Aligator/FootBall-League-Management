@@ -205,7 +205,7 @@ namespace Football_League_App.Controllers
         public async Task<IActionResult> Create([Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
         {
             SqlConnection con = new(connectString);
-            string query = "Insert into Players values(@TenCT,@LoaiCT,@QuocTich,@Luong,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB)";
+            string query = "Insert into Players values(@TenCT,@LoaiCT,@QuocTich,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB,@Luong)";
             SqlCommand cmd = new(query, con);
             con.Open();
             try
@@ -244,6 +244,24 @@ namespace Football_League_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
 
+
+        // POST: Players/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string MaCt)
+        {
+            // Kiểm tra và xóa cầu thủ dựa trên mã CLB và tên cầu thủ
+            // Ví dụ:
+            var player = _context.Players.FirstOrDefault(p => p.MaCt == MaCt);
+            if (player != null)
+            {
+                _context.Players.Remove(player);
+                _context.SaveChanges();
+                return RedirectToAction("Players", "Tournaments"); // Chuyển hướng đến danh sách cầu thủ hoặc trang khác
+            }
+
+            return NotFound(); // Trả về NotFound nếu không tìm thấy cầu thủ
+        }
 
         private bool PlayerExists(string id)
         {
