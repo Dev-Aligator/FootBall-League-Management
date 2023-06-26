@@ -31,9 +31,7 @@ namespace Football_League_App.Controllers
         // GET: Players/Create
         public IActionResult Create()
         {
-            ViewData["MaClb"] = _context.Clubs
-                .Select(c => new SelectListItem { Value = c.MaClb.ToString(), Text = c.TenClb })
-                .ToList();
+            ViewData["MaClb"] = new SelectList(_context.Clubs, "MaClb", "MaClb");
             return View();
         }
 
@@ -142,25 +140,6 @@ namespace Football_League_App.Controllers
             return player;
         }
 
-        // GET: Players/Edit/5
-        public async Task<IActionResult> Edit(string? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var player = await _context.Players.FindAsync(id);
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.MaClb = new SelectList(_context.Clubs, "MaClb", "TenClb", player.MaClb);
-            ViewBag.TenCt = new SelectList(_context.Players, "MaCt", "TenCt", player.TenCt);
-
-            return View(player);
-        }
 
         // POST: Players/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -170,7 +149,7 @@ namespace Football_League_App.Controllers
         public async Task<IActionResult> Create([Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
         {
             SqlConnection con = new(connectString);
-            string query = "Insert into Players values(@TenCT,@LoaiCT,@QuocTich,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB,@Luong)";
+            string query = "Insert into Players values(@TenCT,@LoaiCT,@QuocTich,@Luong,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB)";
             SqlCommand cmd = new(query, con);
             con.Open();
             try
@@ -203,62 +182,37 @@ namespace Football_League_App.Controllers
             ViewData["MaClb"] = clubList;
             return View(player);
         }
-
+        
         // POST: Players/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string MaCt, [Bind("Id, MaCt, TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
         {
-            if (MaCt != player.MaCt)
+            if (id != player.MaCt)
             {
                 return NotFound();
             }
 
-            try
+            if (ModelState.IsValid)
             {
-                // Retrieve the existing player from the database based on MaCt
-                var existingPlayer = await _context.Players.FindAsync(MaCt);
-
-                if (existingPlayer != null)
+                try
                 {
-                    // Update the existing player with the new details
-                    existingPlayer.TenCt = player.TenCt;
-                    existingPlayer.LoaiCt = player.LoaiCt;
-                    existingPlayer.QuocTich = player.QuocTich;
-                    existingPlayer.Luong = player.Luong;
-                    existingPlayer.ChieuCao = player.ChieuCao;
-                    existingPlayer.CanNang = player.CanNang;
-                    existingPlayer.ViTriChinh = player.ViTriChinh;
-                    existingPlayer.ViTriPhu = player.ViTriPhu;
-                    existingPlayer.NgaySinh = player.NgaySinh;
-                    existingPlayer.SoAo = player.SoAo;
-                    existingPlayer.ChanThuan = player.ChanThuan;
-                    existingPlayer.MaClb = player.MaClb;
-
-                    // Save the changes to the database
+                    _context.Update(player);
                     await _context.SaveChangesAsync();
-
-                    return RedirectToAction("Players", "Tournaments");
                 }
-
-                return NotFound();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerExists(player.MaCt))
+                catch (DbUpdateConcurrencyException)
                 {
-                    return NotFound();
+                    if (!PlayerExists(player.MaCt))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-                else
-                {
-                    throw;
-                }
-<<<<<<< Updated upstream
                 return RedirectToAction(nameof(Index));
             }
 			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
@@ -268,14 +222,28 @@ namespace Football_League_App.Controllers
 			SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
 
             ViewData["MaClb"] = clubList;
-=======
-            }
-
-            ViewData["MaClb"] = new SelectList(_context.Clubs, "MaClb", "MaClb", player.MaClb);
-            ViewData["TenCt"] = new SelectList(_context.Players, "TenCt", "TenCt", player.TenCt);
->>>>>>> Stashed changes
             return View(player);
         }
+
+        // GET: Players/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null || _context.Players == null)
+            {
+                return NotFound();
+            }
+
+            var player = await _context.Players
+                .Include(p => p.MaClbNavigation)
+                .FirstOrDefaultAsync(m => m.MaCt == id);
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            return View(player);
+        }
+
         // POST: Players/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
