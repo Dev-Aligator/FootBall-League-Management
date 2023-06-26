@@ -7,7 +7,6 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Football_League_App.Models;
 
 namespace Football_League_App.Controllers
 {
@@ -34,21 +33,23 @@ namespace Football_League_App.Controllers
         [HttpPost]
 		public IActionResult MainView(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate)
 		{
-			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
-
-			if (CreateTournament(leagueName, txtMaxTeams, txtStartDate, txtEndDate, GetMaUsersFromUserName(currentUsername)))
+			if (CreateTournament(leagueName, txtMaxTeams, txtStartDate, txtEndDate))
 			{
 				TempData["Message"] = "Create A Tournamanent Successfully!";
-				// CreateAccountForAllTeams(txtMaxTeams);
+				CreateAccountForAllTeams(txtMaxTeams);
 				return RedirectToAction("MainView", "Dashboard");
 			}
 			return RedirectToAction("MainView", "Dashboard");
 		}
 
-		private bool CreateTournament(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate, string userId)
+		private bool CreateTournament(string leagueName, int txtMaxTeams, string txtStartDate, string txtEndDate)
 		{
 			SqlConnection con = new("Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
+<<<<<<< HEAD
 			string query = "Set Dateformat dmy\n Insert into League (LeagueName, MaxTeams, StartDate, EndDate, UserId) values(@leagueName,@MaxTeams,@startDate,@endDate, @userId)";
+=======
+			string query = "Set Dateformat dmy\n Insert into League values(@leagueName,@MaxTeams,@startDate,@endDate)";
+>>>>>>> f9fd7517311e633c841b6eabcd9425831ed362bf
 			SqlCommand cmd = new(query, con);
 			con.Open();
 			try
@@ -59,8 +60,6 @@ namespace Football_League_App.Controllers
 				cmd.Parameters.AddWithValue("startDate", dt);
 			    dt = DateTime.Parse(txtEndDate);
 				cmd.Parameters.AddWithValue("endDate", dt);
-				cmd.Parameters.AddWithValue("userId", userId);
-
 				cmd.ExecuteNonQuery();
 				return true;
 			}
@@ -98,23 +97,6 @@ namespace Football_League_App.Controllers
 			}
 			con.Close();
 			//Hàm này sẽ tạo tài khoản mặc định cho tất cả các CLB 
-		}
-
-
-		private string GetMaUsersFromUserName(string userName)
-		{
-			FlmdbContext flmDb = new FlmdbContext();
-			User user = flmDb.Users.FirstOrDefault(u => u.UserName == userName);
-
-			return user?.MaUsers;
-		}
-
-		private int GetLoaiUsersFromMaUsers(string maUsers)
-		{
-			FlmdbContext flmDb = new FlmdbContext();
-			User user = flmDb.Users.FirstOrDefault(u => u.MaUsers == maUsers);
-
-			return user?.LoaiUsers ?? 2;
 		}
 	}
 }

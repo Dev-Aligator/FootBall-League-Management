@@ -141,9 +141,65 @@ namespace Football_League_App.Controllers
         }
 
 
+
         // POST: Players/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public async Task<IActionResult> Edit(string MaCt, [Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
+        {
+            if (MaCt != player.MaCt)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                // Retrieve the existing player from the database based on MaCt
+                var existingPlayer = await _context.Players.FindAsync(MaCt);
+
+                if (existingPlayer != null)
+                {
+                    // Update the existing player with the new details
+                    existingPlayer.TenCt = player.TenCt;
+                    existingPlayer.LoaiCt = player.LoaiCt;
+                    existingPlayer.QuocTich = player.QuocTich;
+                    existingPlayer.Luong = player.Luong;
+                    existingPlayer.ChieuCao = player.ChieuCao;
+                    existingPlayer.CanNang = player.CanNang;
+                    existingPlayer.ViTriChinh = player.ViTriChinh;
+                    existingPlayer.ViTriPhu = player.ViTriPhu;
+                    existingPlayer.NgaySinh = player.NgaySinh;
+                    existingPlayer.SoAo = player.SoAo;
+                    existingPlayer.ChanThuan = player.ChanThuan;
+                    existingPlayer.MaClb = player.MaClb;
+
+                    // Save the changes to the database
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Players", "Tournaments");
+                }
+
+                return NotFound();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PlayerExists(player.MaCt))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            ViewData["MaClb"] = new SelectList(_context.Clubs, "MaClb", "MaClb", player.MaClb);
+            ViewData["TenCt"] = new SelectList(_context.Players, "TenCt", "TenCt", player.TenCt);
+            return View("Detail", player);
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
@@ -186,45 +242,7 @@ namespace Football_League_App.Controllers
         // POST: Players/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
-        {
-            if (id != player.MaCt)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(player);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PlayerExists(player.MaCt))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
-
-
-            List<Club> allClubs = GetClubsByUsers(GetMaUsersFromUserName(currentUsername));
-			SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
-
-            ViewData["MaClb"] = clubList;
-            return View(player);
-        }
-
+        
         // GET: Players/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
