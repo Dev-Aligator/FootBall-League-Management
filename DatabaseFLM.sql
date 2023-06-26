@@ -85,6 +85,7 @@ SET IDENTITY_INSERT Players OFF
 
 /*Còn không thì thêm bình thường như này*/
 insert into Players values(N'Rashford', 0, 'Anh', 180, 70, 'LW', 'CF', '1997-10-31', 10, 'Chan Phai', 'Club001',2000000)
+delete from PLayers where mact='Player004'
 
 /*Alter table Players add constraint FK_MACLB foreign key(MaCLB) references Clubs(MaCLB)
 Alter table Clubs add constraint FK_MACT foreign key(MaCT) references Players(MaCT)*/

@@ -4,92 +4,91 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
+<link rel="stylesheet" href="~/css/FLM-2023.AddPlayer.css" />
+<main>
+<section class="container">
+    <header>Edit Player</header>
+    <form asp-action="Edit" class="form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="MaCt" asp-for="MaCt" />
 
-<h1>Edit</h1>
+        <div class="input-box">
+            <label>Tên Cầu Thủ</label>
+            <input asp-for="TenCt" placeholder="Nhập tên cầu thủ" />
+            <span asp-validation-for="TenCt" class="text-danger"></span>
+        </div>
 
-<h4>Player</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="MaCt" />
-            <div class="form-group">
-                <label asp-for="TenCt" class="control-label"></label>
-                <input asp-for="TenCt" class="form-control" />
-                <span asp-validation-for="TenCt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LoaiCt" class="control-label"></label>
-                <input asp-for="LoaiCt" class="form-control" />
-                <span asp-validation-for="LoaiCt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuocTich" class="control-label"></label>
-                <input asp-for="QuocTich" class="form-control" />
+        <div class="input-box">
+            <label>Loại Cầu Thủ</label>
+            <input asp-for="LoaiCt" placeholder="Nhập loại cầu thủ" />
+            <span asp-validation-for="LoaiCt" class="text-danger"></span>
+        </div>
+
+        <div class="column">
+            <div class="input-box">
+                <label>Quốc Tịch</label>
+                <input asp-for="QuocTich" placeholder="Nhập Quốc tịch" />
                 <span asp-validation-for="QuocTich" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Luong" class="control-label"></label>
-                <input asp-for="Luong" class="form-control" />
-                <span asp-validation-for="Luong" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChieuCao" class="control-label"></label>
-                <input asp-for="ChieuCao" class="form-control" />
-                <span asp-validation-for="ChieuCao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CanNang" class="control-label"></label>
-                <input asp-for="CanNang" class="form-control" />
-                <span asp-validation-for="CanNang" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViTriChinh" class="control-label"></label>
-                <input asp-for="ViTriChinh" class="form-control" />
-                <span asp-validation-for="ViTriChinh" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViTriPhu" class="control-label"></label>
-                <input asp-for="ViTriPhu" class="form-control" />
-                <span asp-validation-for="ViTriPhu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NgaySinh" class="control-label"></label>
-                <input asp-for="NgaySinh" class="form-control" />
+            <div class="input-box">
+                <label>Ngày Sinh</label>
+                <input asp-for="NgaySinh" placeholder="Nhập ngày sinh" />
                 <span asp-validation-for="NgaySinh" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SoAo" class="control-label"></label>
-                <input asp-for="SoAo" class="form-control" />
-                <span asp-validation-for="SoAo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChanThuan" class="control-label"></label>
-                <input asp-for="ChanThuan" class="form-control" />
-                <span asp-validation-for="ChanThuan" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaClb" class="control-label"></label>
-                <select asp-for="MaClb" class="form-control" asp-items="ViewBag.MaClb"></select>
-                <span asp-validation-for="MaClb" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div class="column">
+            <div class="input-box">
+                <label>Chiều Cao</label>
+                <input asp-for="ChieuCao" placeholder="Nhập chiều cao" />
+                <span asp-validation-for="ChieuCao" class="text-danger"></span>
+            </div>
+            <div class="input-box">
+                <label>Cân Nặng</label>
+                <input asp-for="CanNang" placeholder="Nhập cân nặng" />
+                <span asp-validation-for="CanNang" class="text-danger"></span>
+            </div>
+        </div>
 
+
+        <div class="column">
+            <div class="input-box">
+                <label>Vị Trí Chính</label>
+                <input asp-for="ViTriChinh" placeholder="Nhập vị trí chính" />
+                <span asp-validation-for="ViTriChinh" class="text-danger"></span>
+            </div>
+            <div class="input-box">
+                <label>Vị Trí Phụ</label>
+                <input asp-for="ViTriPhu" placeholder="Nhập vị trí phụ" />
+                <span asp-validation-for="ViTriPhu" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="input-box address">
+            <label>Thông tin bổ sung</label>
+            <input asp-for="SoAo" placeholder="Số Áo" />
+            <span asp-validation-for="SoAo" class="text-danger"></span>
+
+            <input asp-for="ChanThuan" placeholder="Chân Thuận" />
+            <span asp-validation-for="ChanThuan" class="text-danger"></span>
+
+            <input asp-for="Luong" placeholder="Lương" />
+            <span asp-validation-for="Luong" class="text-danger"></span>
+            <div class="column">
+                <div class="select-box">
+                    <select asp-for="MaClb" class="form-control" asp-items="ViewBag.MaClb"></select>
+                </div>
+            </div>
+        </div>
+        <button type="submit">Lưu</button>
+
+        <div style="text-align: center; margin-top: 5px;">
+            <a asp-action="Players" asp-controller="Tournaments">Back to List</a>
+        </div>
+    </form>
+</section>
+</main>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

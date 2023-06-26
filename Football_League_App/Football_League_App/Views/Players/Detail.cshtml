@@ -11,7 +11,7 @@
 <main>
     <section class="container">
         <header>Details of Player</header>
-        <form asp-action="Delete" class="form">
+        <form asp-action="Detail" class="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">CLB</label>
@@ -28,11 +28,27 @@
             </div>
 
             <div id="playerDetails">
+
+
+                <div class="input-box">
+                    <label>Mã Cầu Thủ</label>
+                    <input readonly asp-for="MaCt" name="MaCt" placeholder="Mã cầu thủ" />
+                    <span asp-validation-for="MaCt" class="text-danger"></span>
+                </div>
+
+                <div class="input-box">
+                    <label>Tên Cầu Thủ</label>
+                    <input disabled asp-for="TenCt" placeholder="Nhập tên cầu thủ" />
+                    <span asp-validation-for="TenCt" class="text-danger"></span>
+                </div>
+
+
                 <div class="input-box">
                     <label>Loại Cầu Thủ</label>
                     <input disabled asp-for="LoaiCt" name="LoaiCt" placeholder="Loại cầu thủ" />
                     <span asp-validation-for="LoaiCt" class="text-danger"></span>
                 </div>
+
 
                 <div class="column">
                     <div class="input-box">
@@ -90,8 +106,8 @@
             </div>
 
             <button type="submit">Xóa Cầu Thủ</button>
-            <button type="submit">Sửa Thông Tin Cầu Thủ</button>
-
+            <button id="editButton" type="button">Sửa thông tin cầu thủ</button>
+            <button asp-action="Edit" id="saveButton" type="submit" style="display: none;">Lưu</button>
             <div style="text-align: center; margin-top: 5px;">
                 <a asp-action="Players" asp-controller="Tournaments">Back to List</a>
             </div>
@@ -174,12 +190,48 @@
                 });
             });
         });
+        $(function () {
+            // Enable all input fields when the "Sửa thông tin cầu thủ" button is clicked
+            $("#editButton").click(function () {
+                $("#playerDetails input").prop("disabled", false);
+                $("#playerDetails select").prop("disabled", false);
+                $(this).hide();
+                $("#saveButton").show();
+            });
+
+            // Save button click event handler
+            $("#saveButton").click(function () {
+                // Get the selected player and club values
+                var selectedPlayer = $("#playerSelect").val();
+                var selectedClub = $("#clubSelect").val();
+
+                // Prepare the player details data
+                var playerData = {
+                    MaCt: selectedPlayer,
+                    player: $("#playerDetails form").serialize()
+                };
+
+                // Make an AJAX request to update the player details
+                $.ajax({
+                    url: '@Url.Action("Edit")',
+                    type: 'POST',
+                    data: playerData,
+                    success: function (result) {
+                        // Handle the success response
+                        console.log("Player details updated successfully.");
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle the error response
+                        console.log("Error updating player details:", error);
+                    }
+                });
+            });
+        });
 
     </script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-  
-}
 
+}
