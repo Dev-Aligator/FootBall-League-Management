@@ -7,7 +7,10 @@ namespace Football_League_App.Controllers
 {
     public class RegisterController : Controller
     {
-        readonly FlmdbContext flmDb = new();
+
+		string connectString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True; MultipleActiveResultSets = True; Encrypt = False; TrustServerCertificate = True";
+
+		readonly FlmdbContext flmDb = new();
         public IActionResult Index()
         {
             return View();
@@ -52,8 +55,10 @@ namespace Football_League_App.Controllers
 
         private void CreateAccount(string txtUser, string txtPass)
         {
-			SqlConnection con = new("Data Source=.\\sqlexpress;Initial Catalog=FLMDB;Integrated Security=True;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True");
-			string query = "Insert into Users values(@username,@password,@phone,@email,0)";
+
+            // Account type == 2 is for normal users, admin users have the account type of 0
+			SqlConnection con = new(connectString);
+			string query = "Insert into Users values(@username,@password,@phone,@email,2)";
             SqlCommand cmd = new(query, con);
             con.Open();
             try

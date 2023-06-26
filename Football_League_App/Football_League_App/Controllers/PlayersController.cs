@@ -37,10 +37,26 @@ namespace Football_League_App.Controllers
 
         public IActionResult Detail()
         {
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
             // Create a list of Club options for the first select tag
-            List<SelectListItem> clubOptions = _context.Clubs
-                .Select(c => new SelectListItem { Value = c.MaClb.ToString(), Text = c.TenClb })
-                .ToList();
+            List<SelectListItem> clubOptions = null;
+
+			string MaUser = GetMaUsersFromUserName(currentUsername);
+
+            if (GetLoaiUsersFromMaUsers(MaUser) == 0)
+            {
+				clubOptions = _context.Clubs
+				.Select(c => new SelectListItem { Value = c.MaClb.ToString(), Text = c.TenClb })
+				.ToList();
+			}
+            else 
+            {
+				clubOptions = _context.Clubs
+				.Where(c => c.UserId == MaUser)
+				.Select(c => new SelectListItem { Value = c.MaClb.ToString(), Text = c.TenClb })
+				.ToList();
+			}
+			
 
             // Add the select tag options to the ViewBag
             ViewBag.MaClb = clubOptions;
@@ -158,7 +174,12 @@ namespace Football_League_App.Controllers
                 //display error
             }
             con.Close();
-            ViewData["MaClb"] = new SelectList(_context.Clubs, "MaClb", "MaClb", player.MaClb);
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+
+			List<Club> allClubs = GetClubsByUsers(GetMaUsersFromUserName(currentUsername));
+			SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
+            ViewData["MaClb"] = clubList;
             return View(player);
         }
         
@@ -194,7 +215,13 @@ namespace Football_League_App.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaClb"] = new SelectList(_context.Clubs, "MaClb", "MaClb", player.MaClb);
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+
+            List<Club> allClubs = GetClubsByUsers(GetMaUsersFromUserName(currentUsername));
+			SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
+
+            ViewData["MaClb"] = clubList;
             return View(player);
         }
 
@@ -240,5 +267,65 @@ namespace Football_League_App.Controllers
         {
             return (_context.Players?.Any(e => e.MaCt == id)).GetValueOrDefault();
         }
-    }
+
+
+		public List<Club> GetClubsByUsers(string userId)
+		{
+			List<Club> clubs = new List<Club>();
+
+			using (SqlConnection con = new SqlConnection(connectString))
+			{
+                string query = "";
+                if (GetLoaiUsersFromMaUsers(userId) == 0)
+                {
+					query = "SELECT MaClb FROM Clubs";
+				}
+                else
+                {
+					query = "SELECT MaClb FROM Clubs WHERE UserId = @userId";
+
+				}
+
+
+				SqlCommand sqlCommand = new SqlCommand(query, con);
+				sqlCommand.Parameters.AddWithValue("@userId", userId);
+				con.Open();
+
+				SqlDataReader reader = sqlCommand.ExecuteReader();
+
+				while (reader.Read())
+				{
+					string maClb = reader["MaClb"].ToString();
+
+					Club club = new Club
+					{
+						MaClb = maClb,
+						// Populate other properties if needed
+					};
+
+					clubs.Add(club);
+				}
+
+				con.Close();
+			}
+
+			return clubs;
+		}
+
+		private string GetMaUsersFromUserName(string userName)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.UserName == userName);
+
+			return user?.MaUsers;
+		}
+
+		private int GetLoaiUsersFromMaUsers(string maUsers)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.MaUsers == maUsers);
+
+			return user?.LoaiUsers ?? 2;
+		}
+	}
 }

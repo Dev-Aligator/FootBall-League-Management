@@ -26,4 +26,7 @@ public partial class Club
     public virtual ICollection<Match> MatchMaDoiNhaNavigations { get; set; } = new List<Match>();
 
     public virtual ICollection<Player> Players { get; set; } = new List<Player>();
+
+	public string UserId { get; set; }
+    public User User { get; set; } = null!;
 }

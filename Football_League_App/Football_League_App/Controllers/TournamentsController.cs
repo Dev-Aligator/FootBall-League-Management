@@ -1,6 +1,7 @@
 ﻿using Football_League_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Football_League_App.Controllers
 {
@@ -23,14 +24,18 @@ namespace Football_League_App.Controllers
 
 		public IActionResult Leagues()
 		{
-			List<League> list = GetLeaguesList();
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
 			ViewBag.model = list;
 			return View();
 		}
 
 		public IActionResult LeaguesInfo()
 		{
-			List<League> list = GetLeaguesList();
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
 			ViewBag.model = list;
 			return View();
 		}
@@ -157,13 +162,23 @@ namespace Football_League_App.Controllers
 			con.Close();
 		}
 
-		public List<League> GetLeaguesList()
+		public List<League> GetLeaguesList(string userId)
 		{
 			List<League> list = new();
-			string query = "SELECT * FROM League";
+			string query = "";
+			if (GetLoaiUsersFromMaUsers(userId) == 0)
+			{
+				query = "SELECT * FROM League";
+
+			}
+			else
+			{
+				query = "SELECT * FROM League where UserId = @userId";
+			}
 			SqlConnection con = new SqlConnection(connectString);
 			con.Open();
 			SqlCommand sqlCommand = new SqlCommand(query, con);
+			sqlCommand.Parameters.AddWithValue("@userId", userId);
 			SqlDataReader reader = sqlCommand.ExecuteReader();
 			while (reader.Read())
 			{
@@ -185,6 +200,22 @@ namespace Football_League_App.Controllers
 		public IActionResult Rules()
 		{
 			return View();
+		}
+
+		private string GetMaUsersFromUserName(string userName)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.UserName == userName);
+
+			return user?.MaUsers;
+		}
+
+		private int GetLoaiUsersFromMaUsers(string maUsers)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.MaUsers == maUsers);
+
+			return user?.LoaiUsers ?? 2;
 		}
 
 	}

@@ -41,6 +41,8 @@ namespace Football_League_App.Controllers
         {
 			List<Claim> claims = new List<Claim>() {
 					new Claim(ClaimTypes.NameIdentifier,para),
+					new Claim("Username", para),
+
 					new Claim("OtherProperties","Example Role")
 				};
 

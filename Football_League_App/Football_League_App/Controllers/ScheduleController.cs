@@ -9,12 +9,18 @@ namespace Football_League_App.Controllers
 {
     public class ScheduleController : Controller
     {
+
         string connectString = "Data Source=.\\SQLEXPRESS;Initial Catalog=FLMDB;Integrated Security=True; MultipleActiveResultSets = True; Encrypt = False; TrustServerCertificate = True";
 
         public IActionResult Leagues()
         {
-            List<League> list = GetLeaguesList();
-            ViewBag.model = list;
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
+
+			List<League> list = GetLeaguesList(GetMaUsersFromUserName(currentUsername));
+
+
+			ViewBag.model = list;
+            ViewBag.user = GetMaUsersFromUserName(currentUsername);
             return View();
         }
 
@@ -347,14 +353,26 @@ namespace Football_League_App.Controllers
         }
 
 
-        public List<League> GetLeaguesList()
+        public List<League> GetLeaguesList(string userId)
         {
             List<League> list = new();
-            string query = "SELECT * FROM League";
+            string query = "";
+
+			if (GetLoaiUsersFromMaUsers(userId) == 0)
+            {
+				query = "SELECT * FROM League";
+
+			}
+            else
+            {
+				query = "SELECT * FROM League where UserId = @userId";
+			}
             SqlConnection con = new SqlConnection(connectString);
             con.Open();
             SqlCommand sqlCommand = new SqlCommand(query, con);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
+			sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+			SqlDataReader reader = sqlCommand.ExecuteReader();
             while (reader.Read())
             {
                 League league = new League()
@@ -513,5 +531,21 @@ namespace Football_League_App.Controllers
 
             return leagueName;
         }
-    }
+
+		private string GetMaUsersFromUserName(string userName)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.UserName == userName);
+
+			return user?.MaUsers;
+		}
+
+		private int GetLoaiUsersFromMaUsers(string maUsers)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.MaUsers == maUsers);
+
+			return user?.LoaiUsers ?? 2;
+		}
+	}
 }

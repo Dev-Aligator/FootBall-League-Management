@@ -97,8 +97,9 @@ namespace Football_League_App.Controllers
             League league = GetLeagueById(leagueId);
             ViewBag.leagueName = league.LeagueName;
             ViewBag.leagueId = leagueId;
+			string currentUsername = User.Claims.FirstOrDefault(c => c.Type == "Username")?.Value;
 
-            List<Club> allClubs = GetClubsNotInLeague(leagueId); // Fetch clubs from the database using your SQL query
+			List<Club> allClubs = GetClubsNotInLeague(leagueId, GetMaUsersFromUserName(currentUsername)); // Fetch clubs from the database using your SQL query
 
             SelectList clubList = new SelectList(allClubs, "MaClb", "MaClb");
 
@@ -303,7 +304,7 @@ namespace Football_League_App.Controllers
         }
 
 
-        public List<Club> GetClubsNotInLeague(string leagueId)
+        public List<Club> GetClubsNotInLeague(string leagueId, string userId)
         {
             List<Club> clubs = new List<Club>();
 
@@ -315,12 +316,14 @@ namespace Football_League_App.Controllers
                             SELECT MaClb
                             FROM ClubInLeague
                             WHERE MaLeague = @LeagueId
-                        )";
+                        ) AND UserId = @userId";
 
 
                 SqlCommand sqlCommand = new SqlCommand(query, con);
                 sqlCommand.Parameters.AddWithValue("@LeagueId", leagueId);
-                con.Open();
+				sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+				con.Open();
 
                 SqlDataReader reader = sqlCommand.ExecuteReader();
 
@@ -394,8 +397,24 @@ namespace Football_League_App.Controllers
             return clubInLeague;
         }
 
+		private string GetMaUsersFromUserName(string userName)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.UserName == userName);
+
+			return user?.MaUsers;
+		}
+
+		private int GetLoaiUsersFromMaUsers(string maUsers)
+		{
+			FlmdbContext flmDb = new FlmdbContext();
+			User user = flmDb.Users.FirstOrDefault(u => u.MaUsers == maUsers);
+
+			return user?.LoaiUsers ?? 2;
+		}
 
 
 
-    }
+
+	}
 }
