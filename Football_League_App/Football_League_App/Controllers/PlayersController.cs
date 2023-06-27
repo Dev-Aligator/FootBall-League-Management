@@ -205,7 +205,7 @@ namespace Football_League_App.Controllers
 		public async Task<IActionResult> Create([Bind("Id,MaCt,TenCt,LoaiCt,QuocTich,Luong,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaClb")] Player player)
 		{
 			SqlConnection con = new(connectString);
-			string query = "Insert into Players values(@TenCT,@LoaiCT,@QuocTich,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB,@Luong)";
+			string query = "Insert into Players(TenCT,LoaiCT,QuocTich,ChieuCao,CanNang,ViTriChinh,ViTriPhu,NgaySinh,SoAo,ChanThuan,MaCLB,Luong) values(@TenCT,@LoaiCT,@QuocTich,@ChieuCao,@CanNang,@ViTriChinh,@ViTriPhu,@NgaySinh,@SoAo,@ChanThuan,@MaCLB,@Luong)";
 			SqlCommand cmd = new(query, con);
 			con.Open();
 			try
